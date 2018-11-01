@@ -26,6 +26,8 @@ OpenGLCtrl::OpenGLCtrl()
 	m_fLastY = 0;
 
 	m_bIsMaximized = false;
+	m_FrameCount = 0;
+	m_ulStartTick = GetTickCount();
 }
 
 OpenGLCtrl::~OpenGLCtrl()
@@ -109,7 +111,7 @@ void OpenGLCtrl::oglInitialize(void)
 	// Basic Setup:
 	//
 	// Set color to use when clearing the background.
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClearDepth(1.0f);
 
 	// Turn on backface culling
@@ -135,6 +137,9 @@ void OpenGLCtrl::OnDraw(CDC *pDC)
 
 void OpenGLCtrl::OnTimer(UINT nIDEvent) 
 {
+	CString Msg = "";
+	float fFPS = 0;
+
 	switch (nIDEvent)
 	{
 		case 1:
@@ -155,6 +160,10 @@ void OpenGLCtrl::OnTimer(UINT nIDEvent)
 		 break;
 	}
 	
+	m_FrameCount++;
+	fFPS = (m_FrameCount / ((float)(GetTickCount() - m_ulStartTick) / 1000.0f));
+	Msg.Format("FPS: %f\n", fFPS);
+	TRACE0(Msg);
 	CWnd::OnTimer(nIDEvent);
 }
 
@@ -233,49 +242,8 @@ void OpenGLCtrl::oglDrawScene(void)
 	// Wireframe Mode
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	glBegin(GL_QUADS);
-		// Top Side
-		glColor3f(1.0, 0, 0);
-		glVertex3f( 1.0f, 1.0f,  1.0f);
-		glVertex3f( 1.0f, 1.0f, -1.0f);
-		glVertex3f(-1.0f, 1.0f, -1.0f);
-		glVertex3f(-1.0f, 1.0f,  1.0f);
+	DrawSolarSystem();
 
-		// Bottom Side
-		glColor3f(0, 1.0, 0);
-		glVertex3f(-1.0f, -1.0f, -1.0f);
-		glVertex3f( 1.0f, -1.0f, -1.0f);
-		glVertex3f( 1.0f, -1.0f,  1.0f);
-		glVertex3f(-1.0f, -1.0f,  1.0f);
-
-		// Front Side
-		glColor3f(0, 0, 1.0);
-		glVertex3f( 1.0f,  1.0f, 1.0f);
-		glVertex3f(-1.0f,  1.0f, 1.0f);
-		glVertex3f(-1.0f, -1.0f, 1.0f);
-		glVertex3f( 1.0f, -1.0f, 1.0f);
-
-		// Back Side
-		glColor3f(0, 1.0, 1.0);
-		glVertex3f(-1.0f, -1.0f, -1.0f);
-		glVertex3f(-1.0f,  1.0f, -1.0f);
-		glVertex3f( 1.0f,  1.0f, -1.0f);
-		glVertex3f( 1.0f, -1.0f, -1.0f);
-
-		// Left Side
-		glColor3f(1.0, 1.0, 0);
-		glVertex3f(-1.0f, -1.0f, -1.0f);
-		glVertex3f(-1.0f, -1.0f,  1.0f);
-		glVertex3f(-1.0f,  1.0f,  1.0f);
-		glVertex3f(-1.0f,  1.0f, -1.0f);
-
-		// Right Side
-		glColor3f(1.0, 0, 1.0);
-		glVertex3f( 1.0f,  1.0f,  1.0f);
-		glVertex3f( 1.0f, -1.0f,  1.0f);
-		glVertex3f( 1.0f, -1.0f, -1.0f);
-		glVertex3f( 1.0f,  1.0f, -1.0f);
-	glEnd();
 }
 
 void OpenGLCtrl::OnMouseMove(UINT nFlags, CPoint point) 
@@ -312,8 +280,8 @@ void OpenGLCtrl::OnMouseMove(UINT nFlags, CPoint point)
 	// Middle mouse button
 	else if (nFlags & MK_MBUTTON)
 	{
-	  m_fPosX += (float)0.05f * diffX;
-	  m_fPosY -= (float)0.05f * diffY;
+	  m_fPosX += (float)0.01f * diffX;
+	  m_fPosY -= (float)0.01f * diffY;
 	}
  
    OnDraw(NULL);
