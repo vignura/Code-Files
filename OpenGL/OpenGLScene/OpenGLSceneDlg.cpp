@@ -63,7 +63,7 @@ COpenGLSceneDlg::COpenGLSceneDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(COpenGLSceneDlg::IDD, pParent)
 {
 	//{{AFX_DATA_INIT(COpenGLSceneDlg)
-		// NOTE: the ClassWizard will add member initialization here
+	m_iComboSel = 0;
 	//}}AFX_DATA_INIT
 	// Note that LoadIcon does not require a subsequent DestroyIcon in Win32
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
@@ -73,7 +73,7 @@ void COpenGLSceneDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 	//{{AFX_DATA_MAP(COpenGLSceneDlg)
-		// NOTE: the ClassWizard will add DDX and DDV calls here
+	DDX_CBIndex(pDX, IDC_COMBO_OPENGL_SCENE, m_iComboSel);
 	//}}AFX_DATA_MAP
 }
 
@@ -83,6 +83,7 @@ BEGIN_MESSAGE_MAP(COpenGLSceneDlg, CDialog)
 	ON_WM_PAINT()
 	ON_WM_QUERYDRAGICON()
 	ON_WM_SIZE()
+	ON_BN_CLICKED(IDC_BTN_RENDER, OnBtnRender)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -118,7 +119,7 @@ BOOL COpenGLSceneDlg::OnInitDialog()
 	
 	CRect rect;
 	// Get size and position of the picture control
-	GetDlgItem(IDC_BITMAP_OPENGL_SCENE)->GetWindowRect(rect);
+	GetDlgItem(IDC_STATIC_OPENGL_SCENE)->GetWindowRect(rect);
 
 	// Convert screen coordinates to client coordinates
 	ScreenToClient(rect);
@@ -127,7 +128,7 @@ BOOL COpenGLSceneDlg::OnInitDialog()
 	m_oglWindow.oglCreate(rect, this);
 
 	// Setup the OpenGL Window's timer to render
-	m_oglWindow.m_unpTimer = m_oglWindow.SetTimer(1, 10, 0);
+	m_oglWindow.m_unpTimer = m_oglWindow.SetTimer(1, 1, 0);
 	
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -195,6 +196,7 @@ void COpenGLSceneDlg::OnSize(UINT nType, int cx, int cy)
 		 {
 			m_oglWindow.OnSize(nType, cx, cy);
 			m_oglWindow.m_bIsMaximized = false;
+			SetSettingsVisible(true);
 		 }
 
 		 break;
@@ -204,9 +206,33 @@ void COpenGLSceneDlg::OnSize(UINT nType, int cx, int cy)
 	  {
 		 m_oglWindow.OnSize(nType, cx, cy);
 		 m_oglWindow.m_bIsMaximized = true;
-
+		 SetSettingsVisible(false);
 		 break;
 	  }
 	}	
 #endif
+}
+
+void COpenGLSceneDlg::OnBtnRender() 
+{
+	UpdateData(true);
+
+	m_oglWindow.ChangeScene(m_iComboSel);
+}
+
+
+void COpenGLSceneDlg::SetSettingsVisible(bool bState)
+{
+	if(bState == true)
+	{
+		GetDlgItem(IDC_BTN_RENDER)->ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_COMBO_OPENGL_SCENE)->ShowWindow(SW_SHOW);
+		GetDlgItem(IDC_STATIC_SETTINGS)->ShowWindow(SW_SHOW);
+	}
+	else
+	{
+		GetDlgItem(IDC_BTN_RENDER)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_COMBO_OPENGL_SCENE)->ShowWindow(SW_HIDE);
+		GetDlgItem(IDC_STATIC_SETTINGS)->ShowWindow(SW_HIDE);
+	}
 }
