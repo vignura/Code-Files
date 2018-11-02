@@ -17,6 +17,7 @@ class COpenGLSceneDlg : public CDialog
 // Construction
 public:
 	COpenGLSceneDlg(CWnd* pParent = NULL);	// standard constructor
+	void SetSettingsVisible(bool bState);
 
 private:
 	OpenGLCtrl m_oglWindow;	
@@ -24,7 +25,7 @@ private:
 // Dialog Data
 	//{{AFX_DATA(COpenGLSceneDlg)
 	enum { IDD = IDD_OPENGLSCENE_DIALOG };
-		// NOTE: the ClassWizard will add data members here
+	int m_iComboSel;
 	//}}AFX_DATA
 
 	// ClassWizard generated virtual function overrides
@@ -44,6 +45,7 @@ protected:
 	afx_msg void OnPaint();
 	afx_msg HCURSOR OnQueryDragIcon();
 	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnBtnRender();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
