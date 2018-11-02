@@ -6,11 +6,13 @@
 #endif // _MSC_VER > 1000
 // OpenGLCtrl.h : header file
 //
-#include <gl/gl.h>
-#include <gl/glu.h>
+#include "DrawFun.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // OpenGLCtrl window
+
+#define OGL_COLORED_CUBE		0x0
+#define OGL_SOLAR_SYSTEM		0x1
 
 class OpenGLCtrl : public CWnd
 {
@@ -29,6 +31,9 @@ private:
 	CRect   m_rect;
 	CRect   m_oldWindow;
 	CRect   m_originalRect;
+	unsigned long m_FrameCount;
+	unsigned long m_ulStartTick;
+	int m_iSceneID;
 
 	float m_fPosX;
 	float m_fPosY;
@@ -47,6 +52,7 @@ public:
 	void oglCreate(CRect rect, CWnd *parent);
 	void oglInitialize(void);
 	void oglDrawScene(void);
+	void ChangeScene(int iSceneID);
 
 	afx_msg void OnDraw(CDC *pDC);
 	afx_msg void OnSize(UINT nType, int cx, int cy);
