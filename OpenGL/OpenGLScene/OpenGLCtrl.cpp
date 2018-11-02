@@ -28,6 +28,7 @@ OpenGLCtrl::OpenGLCtrl()
 	m_bIsMaximized = false;
 	m_FrameCount = 0;
 	m_ulStartTick = GetTickCount();
+	m_iSceneID = OGL_COLORED_CUBE;
 }
 
 OpenGLCtrl::~OpenGLCtrl()
@@ -196,15 +197,12 @@ void OpenGLCtrl::OnSize(UINT nType, int cx, int cy)
 		{
 			// Get the current window rect
 			GetWindowRect(m_rect);
+			ScreenToClient(&m_rect);
+			
+			m_oldWindow = m_rect;
 
 			// Move the window accordingly
 			MoveWindow(6, 6, cx - 14, cy - 14);
-
-			// Get the new window rect
-			GetWindowRect(m_rect);
-
-			// Store our old window as the new rect
-			m_oldWindow = m_rect;
 
 			break;
 		}
@@ -219,16 +217,11 @@ void OpenGLCtrl::OnSize(UINT nType, int cx, int cy)
 				 GetWindowRect(m_rect);
 
 				 // Move the window accordingly (to our stored old window)
-				 MoveWindow(m_oldWindow.left,
-							m_oldWindow.top,
+				 MoveWindow(m_oldWindow.left + 49,
+							m_oldWindow.top + 50,
 							m_originalRect.Width(),
 							m_originalRect.Height());
 
-				 // Get the new window rect
-				 GetWindowRect(m_rect);
-
-				 // Store our old window as the new rect
-				 m_oldWindow = m_rect;
 			}
 
 		break;
@@ -242,7 +235,22 @@ void OpenGLCtrl::oglDrawScene(void)
 	// Wireframe Mode
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-	DrawSolarSystem();
+	switch(m_iSceneID)
+	{
+		case OGL_COLORED_CUBE: 
+
+			DrawColoredCube(0, 0, 0, 2.0);
+			break;
+		
+		case OGL_SOLAR_SYSTEM:
+
+			DrawSolarSystem();
+			break;
+		
+		default:
+			;
+	}
+
 
 }
 
@@ -287,4 +295,10 @@ void OpenGLCtrl::OnMouseMove(UINT nFlags, CPoint point)
    OnDraw(NULL);
 	
 	CWnd::OnMouseMove(nFlags, point);
+}
+
+
+void OpenGLCtrl::ChangeScene(int iSceneID)
+{
+	m_iSceneID = iSceneID;
 }
