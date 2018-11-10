@@ -112,7 +112,7 @@ void OpenGLCtrl::oglInitialize(void)
 	// Basic Setup:
 	//
 	// Set color to use when clearing the background.
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(0.0f, 0.1f, 0.2f, 1.0f);
 	glClearDepth(1.0f);
 
 	// Turn on backface culling
@@ -122,6 +122,11 @@ void OpenGLCtrl::oglInitialize(void)
 	// Turn on depth testing
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
+
+	glEnable(GL_LINE_SMOOTH);
+	glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// Send draw request
 	OnDraw(NULL);
@@ -246,12 +251,15 @@ void OpenGLCtrl::oglDrawScene(void)
 
 			DrawSolarSystem();
 			break;
+
+		case OGL_CLOCK:
+			
+			DrawClock(SEC_HAND_CONTINUOUS);
+			break;
 		
 		default:
 			;
 	}
-
-
 }
 
 void OpenGLCtrl::OnMouseMove(UINT nFlags, CPoint point) 
@@ -277,12 +285,15 @@ void OpenGLCtrl::OnMouseMove(UINT nFlags, CPoint point)
 	  {
 		 m_fRotY = 0.0f;
 	  }
+
+	  OnDraw(NULL);
 	}
 
 	// Right mouse button
 	else if (nFlags & MK_RBUTTON)
 	{
 	  m_fZoom -= (float)0.1f * diffY;
+	  OnDraw(NULL);
 	}
 
 	// Middle mouse button
@@ -290,9 +301,9 @@ void OpenGLCtrl::OnMouseMove(UINT nFlags, CPoint point)
 	{
 	  m_fPosX += (float)0.01f * diffX;
 	  m_fPosY -= (float)0.01f * diffY;
+	  OnDraw(NULL);
 	}
- 
-   OnDraw(NULL);
+
 	
 	CWnd::OnMouseMove(nFlags, point);
 }
