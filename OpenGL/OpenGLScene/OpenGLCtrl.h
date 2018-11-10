@@ -13,6 +13,7 @@
 
 #define OGL_COLORED_CUBE		0x0
 #define OGL_SOLAR_SYSTEM		0x1
+#define OGL_CLOCK				0x2
 
 class OpenGLCtrl : public CWnd
 {
