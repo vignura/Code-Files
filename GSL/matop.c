@@ -3,70 +3,34 @@
 int computeCorrMat(int in_iOrder, gsl_matrix *in_Mat, gsl_matrix *out_CorrMat)
 {
 	int iRetVal = 0;
-	gsl_vector *vecStdDev = 0;
-	gsl_matrix *mat_C = 0;
-	gsl_matrix *mat_D = 0;
-	gsl_matrix *mat_XC = 0;
-	gsl_matrix *mat_XCD = 0;
-	gsl_matrix *mat_XCDT = 0;
+	double dCorr = 0;
 
-	/* input validation */
-	if((in_Mat == NULL) || (out_CorrMat == NULL))
-	{
-		return NULL_PTR_ACCESS;
-	}
-
-	if(in_iOrder < 0)
-	{
-		return INVALID_MAT_ORDER;
-	}
+	gsl_matrix *mat_Cov = 0;
+	gsl_matrix *mat_Corr = 0;
 
 	/* allocate memory */
-	vecStdDev = gsl_vector_alloc(in_iOrder);
-	mat_C = gsl_matrix_alloc(in_iOrder, in_iOrder);
-	mat_D = gsl_matrix_alloc(in_iOrder, in_iOrder);
-	mat_XC = gsl_matrix_alloc(in_iOrder, in_iOrder);
-	mat_XCD = gsl_matrix_alloc(in_iOrder, in_iOrder);
-	mat_XCDT = gsl_matrix_alloc(in_iOrder, in_iOrder);
-
-	/* compute the centering matrix */
-	computeCentringMat(in_iOrder, mat_C);
-
-	/* compute standrad deviation vector */
-	computeStdDevCol(in_iOrder, in_Mat, vecStdDev);
-
-	/* compute inverse of standrad deviation diagnol matrix */
-	computeDiagMat(vecStdDev, mat_D);
-	computeInvMat(mat_D, mat_D);
-
-	/* compute XC mat */
-	gsl_blas_dgemm(CblasNoTrans, CblasNoTrans,
-                  1.0, mat_C, in_Mat,
-                  0.0, mat_XC);
-
-	/* compute XCD */
-	gsl_blas_dgemm(CblasNoTrans, CblasNoTrans,
-                  1.0, mat_XC, mat_D,
-                  0.0, mat_XCD);
-
-	/* compute XCD transpose */
-	gsl_matrix_transpose_memcpy(mat_XCDT, mat_XCD);
-
-	/* compute correlation matrix */
-	gsl_blas_dgemm(CblasNoTrans, CblasNoTrans,
-                  1.0, mat_XCDT, mat_XCD,
-                  0.0, out_CorrMat);	
-
-	/* scale the correlation mat*/
-	gsl_matrix_scale(out_CorrMat, (1 / (double)in_iOrder));
+	mat_Cov = gsl_matrix_alloc(in_iOrder, in_iOrder);
+	mat_Corr = gsl_matrix_alloc(in_iOrder, in_iOrder);
 	
+	/* comppute the covariance matrix */
+	computeCovMat(in_iOrder, in_Mat, mat_Cov);
+
+	/* compute the correlation mat */
+	for (int i = 0; i < in_iOrder; ++i)
+	{
+		for (int j = 0; j < in_iOrder; ++j)
+		{
+			dCorr = gsl_matrix_get(mat_Cov, i, j) / ((sqrt(gsl_matrix_get(mat_Cov, i, i))) * (sqrt(gsl_matrix_get(mat_Cov, j, j))));
+			gsl_matrix_set(mat_Corr, i, j, dCorr);
+		}
+	}
+
+	/* copy to output */
+	gsl_matrix_memcpy(out_CorrMat, mat_Corr);
+
 	/* free memory */
-	gsl_matrix_free(mat_C);
-	gsl_matrix_free(mat_D);
-	gsl_matrix_free(mat_XC);
-	gsl_matrix_free(mat_XCD);
-	gsl_matrix_free(mat_XCDT);
-	gsl_vector_free(vecStdDev);
+	gsl_matrix_free(mat_Cov);
+	gsl_matrix_free(mat_Corr);
 
 	return iRetVal;
 }
