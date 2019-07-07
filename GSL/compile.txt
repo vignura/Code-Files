@@ -1,0 +1,2 @@
+gcc covarinace.c matop.c -o covarinace.out -lgsl -lgslcblas -lm
+gcc inverse.c matop.c -o inverse.out -lgsl -lgslcblas -lm
