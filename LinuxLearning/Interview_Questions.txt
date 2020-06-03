@@ -1,0 +1,229 @@
+================
+Western Digital:
+================
+Bit Manipulation
+Graphs 
+Determine if two strings are anagrams of each other. (hint use prime numbers)
+palindrome
+How much do you know about storage technique   
+find two sum
+rotation a linked list   
+Finding the merging Point of link list   
+Difference between the utility of graphs and tress 
+In C++, what is the difference between a pointer and a reference?
+How can threads exchange data between each other?
+A question about the Least Squares Algorithm.      
+Implement an algorithm to sum the contents of 2 arrays.   
+A riddle: If you have two jugs, a 3L jug and a 5L jug, with no measurement markings, how can you measure out exactly 4L of liquid from them?
+Develop an algorithm that, when given a certain time, can calculate the corresponding angle between the hour and minute hands of a clock at that time. 
+Implement a function for n! using c++ 
+What does static mean in C?
+What are the differences between C++ and C?          
+What is an enum, union and struct?   
+What is an emulator
+How do you return multiple variables?
+What is the Nyquist frequency?
+If you had to write a software program that took 3 inputs and returns if a triangle can be made with those 3 inputs, what are the requirements for the program's inputs?
+Given a number, count the number of set bits. 
+Given a function that generates a random integer in the range of [0, MAX), write a function that gets an integer x as input and returns a random integer in [0, x).
+how to to count number of 1s in binary representation of an integer (8 bits) without loops
+merge sorted list, duplicate elements find.      
+
+==================
+Texas Instruments:
+==================
+How to sort a 1GB file with 32MB memory
+Implement the power function.
+Swap bits at even and odd places.
+What is a context switch, and how can it be performed?
+Can you override a Constructor in java
+In C storage class, const, pointers, malloc etc
+In networking, OSI model, protocols etc
+SQL queries, HTTP methods, basics of OS etc
+You have four resistance of 1, 2 , 3 and 4 ohm. Arrange these ressistance to get a equivalent resistance of 1 ohm
+What is friend class/function in C++?
+How would you start debugging a piece of software on the Linux Kernel.
+One of them is binary search. The other more literature one is the difference between heap and stack
+how to find the median of a singly linked list by only passing through it once.   
+check whether a tree is a binary search tree 
+Variation of the traveling salesman problem. 
+What do a section of memory addresses allocated for a struct actually look like?
+If you press the mouse button and the keypad at the same time, which of them will the computer respond to? 
+Implement fizz buzz  
+Basics of threading, semaphores and kernel programming
+Driver question and Questions related to how C program is stored in memory and why cant we access local variables from other blocks(relating to how they are stored in memory) 
+What's the difference between pointer and reference
+
+=====================
+Microchip Technology:
+=====================
+how to write a subroutine to find the size of the variable
+Questions on Data structure and SDLC cycle.
+What is a copy Constructor
+Bit operators in C language
+The most tricky question was about state machines, since I hadn't drawn any in years.   
+unions, structs, basic questions
+logic gates, op amps, etc   
+Inline function, Macros.   
+
+=========
+Qualcomm:
+=========
+Given the following struct definition in C, what would sizeof(myStruct) return?
+typedef struct {
+   short a;
+   long b;
+   char c;
+} myStruct;   
+Given an image represented as an array of pixels, develop an algorithm that flips it 180 degrees.
+Develop an algorithm to detect a cycle in a Linked-List.   
+What are virtual functions?   
+virtual table in c++   
+Remove node from a singly linked list, reverse a singly linked list   
+Difference between spinlock and mutex.   
+
+isEven(13) // outputs 0
+isEven(12) // outputs 1
+Create the function isEven with appropriate output.
+Once the function is created, create event/error handlers for an input of 0 and an input of null, which both output -1.
+Once finished, recreate the isEven function without using % (modulo) or / (division)."
+
+Given this code, what is the output?
+
+unsint8 x = 0;
+While( x < 255) {
+
+    x = x + 2;
+    Printf(x);
+
+} 
+
+a)
+i = 1
+j = i++
+Print( j )
+Print( i )
+
+b)
+i = 1
+j = ++i
+Print( j )
+Print( i )
+
+What is the difference between a) and b), if any?"
+
+How do virtual tables function, what are pure virtual functions. Questions related to pointers, Dynammic programming, how do you perform locking in OS. 
+How do you access variable arguments in C?
+system design, embedded c, RTOS, Linux kernel   
+"Whiteboard algorithm questions.
+1. Design a parking lot, regular OOP question.
+2. Reverse LinkedList.
+3. Find out if there's a cycle in the Linkedlist."
+What is a static variable in C? What is a global variable?   
+Difference between structures and union   
+What’s the difference between BPSK and QPSK?   
+Write a function to reverse a string.   
+Why do you choose AVL tree in your project?   
+C++, memory management, algorithms, keywords   
+Imagine a page with a number and links to other pages, which includes the same thing too. Given a page, sum all the numbers in all the pages that are linked through the links.   
+C++, memory management, algorithms, keywords   
+Return the nth number of fibonacci sequence both in recursion and DP (let me check for stack overflow)
+Develop a square root function without using any of the inbuilt math libraries
+How do you write software for firmware when there is very little memory.   
+"1. What is Static keyword
+2. What is for loop
+3. What are differences between Struct and Union
+4. What is Binary Tree inorder traversal
+5. What is Binary Heap
+6. Is Binary Heap totally in order
+7. What is Cache
+8. IPv4 IPv6 differences
+9. What are two parts of IPv6 addresses
+10. Programming: Byte Reverse of an integer
+
+Onsite:
+4 technical, 1 director lunch, 1HR
+Round1
+All previous projects in details.
+C programming:
+Sort an integer array. Time Complexity.
+
+Round2
+Projects in detail.
+Programming: Binary Tree inorder Traversal.
+Stack overflow
+
+Round3
+A lot of questions in C, OS, Network
+1) OSI 7 layers
+2) TCP UDP
+3) Static keyword
+4) Struct union differences
+5) Sizeof()
+6) When to use pass by value and pass by reference
+7) Process vs Thread
+8) Memory leak
+9) Context switch
+10) Stack vs Heap
+11) Interrupt
+12) Priority inversion
+13) Memory corruption
+14) Deadlock
+Programming
+1) Output numbers of 1 in an integer
+2) Given a number, if it is fibonacci number, output true, else false.
+Round4
+1) Static keyword
+2) Priority Inversion
+3) Context switch
+4) Stack overflow
+5) Struct vs union
+6) Stack vs heap
+7) Memory map
+Programming:
+1)Reverse Bits of an unsigned 16-bit integer
+2)All non-negative integers. First Array is missing a number to form the second array (the missing number is replaced by 0). And then shuffle the second array. Try to find the missing number.
+
+====
+AMD:
+====
+Operating system:Page table/virtual address. synchronization, mutex, racing condition
+Computer Architecture : cache, GPU
+Algorithm/Data Structure : c++ , Binary Tree, linked list.
+Some basic graphic questions
+Implement a linked list.
+Swap two numbers without using a temporary variable and other questions involving bit manipulation
+Design a game of chess
+Other questions were about debugging issues with drivers   
+Time complexity of BFS, DFS which is better
+How to reverse an int array
+What is memory leak, what's a thread?
+What is a mutex lock.
+There is a sequence of integer numbers, write a function to reverse the order of numbers.  
+How to count the number of words in a string?   
+Bit Extraction   
+what not should be done when implementing an interrupt?   
+Write a program to retrieve first element of reach row using regular expressions
+Design memory management interface for Linux and other subsystems 
+Given a machine how would you determine if it uses little or big endian.
+Count number of bits in number
+In what coding situation can a c++ variable be optimized out by a compiler and what is the way to prevent this from occurring.
+Implement a circular buffer using other data structures
+Reverse a list
+Reverse words in a char array in place, use C.
+Hex bit operation   
+Warps in GPGPU, role of registers in GPU hardware
+Analyse a situation where you get a segmentation fault and whats the reason
+Write code in C/C++ to insert/search for a record in BTree.
+Write Java code to insert/retrieve data in Oracle database from a web page.
+Insert into linked list in the given position.      
+Basic OOP questions, flip flops, low level C questions.   
+How would you augment this binary tree to make searching O(n) time?   
+Describe the difference between kernel space and user space.
+Describe virtual memory?
+Inheritance, Parallel computing, technical information about motherboard and graphic card architecture   
+What is a pure virtual function.
+what's probability space 
+describe SIMD structure
+What is the maximum sum of the elements in a sublist of a array
+What is GDI used for?  
