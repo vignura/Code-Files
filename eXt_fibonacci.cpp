@@ -78,14 +78,17 @@ void assign(vector<int>&a, vector<int>*b)
 		a.push_back((*b)[i]);
 	}
 }
-int main()
+int main(int argc, char * arg[])
 {	
 	int limit;
 	vector<int> seed1_vec,seed2_vec;
 	vector<int> *c;
-	cout<<"Fibonacci series"<<endl;
-	cout<<"enter the no of terms: ";
-	cin>>limit;
+	
+	// cout<<"Fibonacci series"<<endl;
+	// cout<<"enter the no of terms: ";
+	// cin>>limit;
+	sscanf(arg[1], "%d", &limit);
+
 	seed1_vec.push_back(-1);
 	seed2_vec.push_back(1);	
 	clock_t start = clock();
