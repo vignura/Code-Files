@@ -46,7 +46,7 @@ void printList(node *head)
 		printf("%d ", n->num);
 		n = n->next;
 	}	
-	printf(" ]\n");
+	printf("]\n");
 }
 
 void reverseList(node **head)
@@ -61,8 +61,9 @@ void reverseList(node **head)
         n1 = n;
         n = n->next;
         n1->next = n2;
+        // printf("%x \t%x \t%x \t%x\n", n2, n1, n, n1->next);
     }
-    n->next = n1;
     (*head)->next = NULL;
-    *head = n;
+    // printList(n1);
+    *head = n1;
 }
