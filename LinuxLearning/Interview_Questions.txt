@@ -227,3 +227,8 @@ what's probability space
 describe SIMD structure
 What is the maximum sum of the elements in a sublist of a array
 What is GDI used for?  
+
+=================
+Juniper Networks:
+=================
+1) Reverse a List
