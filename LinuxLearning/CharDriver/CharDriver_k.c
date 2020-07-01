@@ -8,6 +8,7 @@
 #include <linux/uaccess.h>
 #include <linux/fs.h>
 #include <linux/mutex.h>
+#include <linux/slab.h>
 
 MODULE_LICENSE("Dual BSD/GPL");
 MODULE_AUTHOR("Vignesh S");
@@ -20,7 +21,7 @@ static DEFINE_MUTEX(char_mutex);
 
 
 static int    majorNumber;                  ///< Stores the device number -- determined automatically
-static char   message[256] = {0};           ///< Memory for the string that is passed from userspace
+static char*   message = NULL;           ///< Memory for the string that is passed from userspace
 static short  size_of_message;              ///< Used to remember the size of the string stored
 static int    numberOpens = 0;              ///< Counts the number of times the device is opened
 static struct class*  charClass  = NULL; ///< The device-driver class struct pointer
@@ -80,6 +81,15 @@ static int CDInit(void)
     }
     printk(KERN_INFO "SimpleChar: device class created correctly\n"); // Made it! device was initialized
 
+    /* allocate memory for message buffer */
+    message = (char *)kmalloc(256, GFP_KERNEL);
+    if(message == NULL)
+    {
+        printk(KERN_ALERT "SimpleChar: Failed allocate memory for message buffer\n");   
+        return ENOMEM;
+    }
+    printk(KERN_INFO "SimpleChar: memory allocated for message buffer successfully\n");
+    
     mutex_init(&char_mutex);
 
    return 0;
@@ -130,14 +140,21 @@ static ssize_t dev_read(struct file *filep, char *buffer, size_t len, loff_t *of
 
 static ssize_t dev_write(struct file *filep, const char *buffer, size_t len, loff_t *offset)
 {
-    sprintf(message, "%s(%zu letters)", buffer, len);   // appending received string with its length
-    size_of_message = strlen(message);                 // store the length of the stored message
+    unsigned long ulRetVal = 0;
+    
+    ulRetVal = copy_from_user(message, buffer, len);
+    sprintf((message + len), "(%zu letters)", len); 
+    size_of_message = strlen(message);                 
     printk(KERN_INFO "SimpleChar: Received %zu characters from the user\n", len);
     return len;
 }
 
 static int dev_release(struct inode *inodep, struct file *filep)
 {
+    if(message != NULL)
+    {
+        kfree(message);
+    }
     mutex_unlock(&char_mutex);
     printk(KERN_INFO "SimpleChar: Device successfully closed\n");
     return 0;

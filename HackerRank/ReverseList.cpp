@@ -67,3 +67,39 @@ void reverseList(node **head)
     // printList(n1);
     *head = n1;
 }
+
+// void reverseList(SinglyLinkedListNode **head)
+// {
+//     SinglyLinkedListNode *n = *head;
+//     SinglyLinkedListNode *n1 = *head;
+//     SinglyLinkedListNode *n2 = *head;
+    
+//     while(n != NULL)
+//     {
+//         n2 = n1;
+//         n1 = n;
+//         n = n->next;
+//         n1->next = n2;
+//         // printf("%x \t%x \t%x \t%x\n", n2, n1, n, n1->next);
+//     }
+//     (*head)->next = NULL;
+//     // printList(n1);
+//     *head = n1;
+// }
+
+SinglyLinkedListNode* cloneList(SinglyLinkedListNode *head)
+{
+	SinglyLinkedListNode* cloneHead = new SinglyLinkedListNode();
+	SinglyLinkedListNode* cloneNode = cloneHead;
+
+	while(head != NULL)
+	{
+		cloneNode->data = head->data;
+		cloneNode->next = new SinglyLinkedListNode();
+
+		head = head->next;
+		cloneNode = cloneNode->next;
+	}
+
+	return cloneHead;
+}

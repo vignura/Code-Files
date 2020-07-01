@@ -1,0 +1,23 @@
+1) PCI vs PCIe:
+https://community.fs.com/blog/pci-vs-pci-x-vs-pci-e-why-choose-pci-e-card.html
+http://www.cables-solutions.com/pci-vs-pci-express.html#:~:text=PCI%20Vs%20PCI%20Express%20in,a%20high%2Dspeed%20serial%20connection.
+
+2) History of PC buses from ISA to PCI:
+https://www.youtube.com/watch?v=51YEyPqvkTk
+
+3) how pci speed is 533 MB at 66MHz 64 bit and not 528 MB/s ?, got a result from google
+https://books.google.co.in/books?id=3iE3UWrE4L0C&pg=PA247&lpg=PA247&dq=how+pci+speed+is+533+MB+at+66MHz+64+bit+and+not+528+MB/s&source=bl&ots=zQQ80AEhDF&sig=ACfU3U1_jK_dREy5nnmET6aEp6nnCYe9Wg&hl=en&sa=X&ved=2ahUKEwilyJn_qqzqAhX7zzgGHV_vBvcQ6AEwAHoECA0QAQ#v=onepage&q=how%20pci%20speed%20is%20533%20MB%20at%2066MHz%2064%20bit%20and%20not%20528%20MB%2Fs&f=false
+
+4) PCIe wiki
+https://en.wikipedia.org/wiki/PCI_Express
+
+5) PCIe vs Ethernet vs RapidIO:
+http://www.rapidio.org/files/InterconnectComparison_v02.pdf
+https://www.eetimes.com/backplane-tutorial-rapidio-pcie-and-ethernet/
+https://rapidio.org/technology-comparisons/
+
+	* Each of these technologies has moved to a multi-lane SerDes physical layer using 8B/10B line coding or more efficient line encodings like 64B/66B line coding for the higher speed offerings
+
+6) The System Bottleneck Shifts To Pci-express
+https://www.nextplatform.com/2017/07/14/system-bottleneck-shifts-pci-express/
+

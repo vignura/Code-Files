@@ -1,0 +1,33 @@
+============
+01 Jul 2020:
+============
+1) What are all the different PCI standards ?
+	PCI, PCI-X (PCI eXtended) and PCIe (Express)
+
+2) What is the difference between PCI, PCI-X and PCIe ?
+	In PCI and PCI-X are based on parallel bus architecture, where all connected devices
+	share the same bus. PCIe follows serial point to point architecture, where each PCIe 
+	device will have a dedicated PCIe lane(s). In PCIe, multiple point to point links are 
+	handlled by a PCIe switch.
+
+3) What is the Bandwidth of various PCI standards ?
+	PCI 	32 or 64 bit wide slots operating at 33 MHz or 66 MHz, so the speed would vary from
+		 	132 MB/s to 528 MB/s
+	PCIX	64 bit wide slots, also suports 32 bits, operating at 66, 133, 266, 533 MHz, so 
+			the speed would vary from 264 MB/s to 4.264 GB/s 
+	PCIe	Supports single lane speed from 250 MB/s (PCIe 1.0) to 7.88 GB/s(PCIe 6.0) and
+			supports upto 16 parallel lanes
+
+4) How many endpoints are supported by different standards ?
+	PCI 	5 endpoints
+	PCIX 	5 endpoints
+	PCIX 	32 endpoints
+
+5) What is a PCIe switch ?
+	PCIe switch is just a switch that switches PCIe packets based on TLP Headers. PCIe switches are
+	used to expand PCIe interconnect
+6) What is PCIe root complex ?
+	PCI and PCIe are designed to connect peripherals (slave devices) to a single Root Complex (eg Processor). So root complex is the master of PCI endpoints. 
+
+7) What is the physical layer used in PCIe ?
+	PCIe uses multi-lane SerDes physical layer using 8B/10B line coding or more efficient line encodings like 64B/66B line coding for the higher speed offerings

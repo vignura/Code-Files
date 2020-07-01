@@ -27,6 +27,7 @@ int main(int argc, char const *argv[])
 
 	printf("Enter a string to send to device: ");
 	scanf("%[^\n]%*c", buffer);
+	// sprintf(buffer, "Test");
 	printf("Writing to device: %s\n", buffer);
 
 	ret = write(fd, buffer, strlen(buffer));
