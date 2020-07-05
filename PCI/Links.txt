@@ -21,3 +21,5 @@ https://rapidio.org/technology-comparisons/
 6) The System Bottleneck Shifts To Pci-express
 https://www.nextplatform.com/2017/07/14/system-bottleneck-shifts-pci-express/
 
+7) Memory mapped IO vs Port mapped IO
+https://www.bogotobogo.com/Embedded/memory_mapped_io_vs_port_mapped_isolated_io.php

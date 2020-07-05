@@ -8,7 +8,7 @@
 	In PCI and PCI-X are based on parallel bus architecture, where all connected devices
 	share the same bus. PCIe follows serial point to point architecture, where each PCIe 
 	device will have a dedicated PCIe lane(s). In PCIe, multiple point to point links are 
-	handlled by a PCIe switch.
+	handlled by a PCIe switch. PCI and PCI X are half duplex, PCIe is full duplex.
 
 3) What is the Bandwidth of various PCI standards ?
 	PCI 	32 or 64 bit wide slots operating at 33 MHz or 66 MHz, so the speed would vary from
@@ -27,7 +27,106 @@
 	PCIe switch is just a switch that switches PCIe packets based on TLP Headers. PCIe switches are
 	used to expand PCIe interconnect
 6) What is PCIe root complex ?
-	PCI and PCIe are designed to connect peripherals (slave devices) to a single Root Complex (eg Processor). So root complex is the master of PCI endpoints. 
+	The interface between PCIe bus and CPU may contain several buses and chipsets which are collectively 
+	called the root complex.
 
 7) What is the physical layer used in PCIe ?
 	PCIe uses multi-lane SerDes physical layer using 8B/10B line coding or more efficient line encodings like 64B/66B line coding for the higher speed offerings
+
+============
+02 Jul 2020:
+============
+1) Why did PCI SIG abandon PCI and PCI-X's parallel bus architecture ?
+	This was due the low power signalling (reflected wave signalling) used by PCI, which meant, at 
+	high frequencies requires shorter traces and fewer loads. hence PCI at higher frequencies 
+	essentialy became a point to point interconnect.
+
+2) How can PCI be compared with SPI, I2C and RS232 ?
+	SPI: like SPI, PCI is also synchronous, (data is latched on clock edges); and like SPI
+	 	 chip select (CS), PCI has Request/Garnt (REQ/GNT) signals for bus arbitration. But 
+	 	 unlike SPI, a seperate Bus arbitrator is required to resolve these REQ/GNT requests.
+	 	 PCI uses parallel bus with is 32 or 64 bit width, while SPI is serial so uses 
+	 	 a single serial pair (MISO/MISO) which is more like PCIe.
+	I2C: PCI bus can have multiple masters and slaves, so PCI uses I2C like address to resolve
+		 transcations. Since SPI like REQ/GNT can be used for resolving conflicts between bus
+		 masters, I2C like address can then be used to resolve slaves connected to the bus.
+	RS322: Like Request to Send (RTS) and Clear to Send (CTS), in RS232, PCI uses Initiator
+		   ready (IRDY) and Target Ready (TRDY) signal for flow control.
+
+3) What are the various PCI transcation modles ?
+	Programmed IO, DMA and peer to peer (rarely used)
+
+4) What is Bus Arbiter in PCI ?
+	Bus Arbiter is the device that grants access to contending PCI master to the bus.
+
+5) What are PCI Disconnect and PCI Retry protocols ?
+	Retry: when a PCI target does not have any data, then it can send a stop signal
+		   to prematurely end the PCI bus cycle, telling the requester to retry again after 
+		   waiting 2 clock cycles. During this wait time the bus arbiter may grant access 
+		   to another master.
+	Disconnect: when a PCI target does not have all the requested data, then it can send a stop 
+				signal to prematurely end the PCI bus cycle, telling the requester to resume again after waiting 2 clock cycles. During this wait time the bus arbiter may grant 
+				access to another master.
+
+	both Disconnect and retry protocol improves the efficiency of the PCI bus.
+
+6) what are PCI errors ?
+	PCI generates, parity error (PERR) and system error (SERR).
+	PCI uses even parity, so when a parity error in data occurs, PERR is asserted and
+	when parity error is detected in PCI address, then SERR is asserted, which would
+	trigger a Non maskable interrupt to the CPU resulting in "blue screen of death".
+
+============
+03 Jul 2020:
+============
+1) How many bus, devices and functions does PCI support ?
+	256 Buses, 32 devices per bus and 8 functions per device. (2 ^ 8), (2 ^ 5), (2 ^ 3) = (2 ^ 16)
+2) What is configuration space in PCI ?
+	Each PCI function can have upto 256 bytes of configuration space that provides the
+	information which is used during PCI enumaration. For example, Header type 1, may
+	indicate that the device connected is a PCI brogde.
+
+3) What are the new PCI X features ?
+	Split transcation model:
+		In PCI X, requester not just sends address but also excahnges other
+		inforamtion such it own address during attribute phase, so if the completer is not able to 
+		complete the transcation in the current bus cycle, it will tell the requester to put the 
+		transcation in queue and end the bus cycle. Finally, when the completer has requested data,
+		it performs a write to the requester this time and transfers the data.
+		(split response; split completion).
+
+	MSI: 
+		Message Signalled Interrupts, where the PCI-X device initiates a memory write to a
+		predetermined address, which understood as interrput, and data of this write contains
+		interrupt vector, hence the CPU will direclty now which device interrupted and can 
+		jump to the corresponding the ISR with out any decoding effort.
+
+	Strobe: 
+		PCIX, in oder to operate at higher clock speeds, introduced new signal called strobe
+		along with the data line, the trasmitting device sends both data and strobe which can
+		be used for latching the data at receiver end. Here since the strobe and data are 
+		propagating through the same path, data sampling errors due to clock skew, 
+		which is due to different propogation delyas were eliminated.
+		eliminated
+
+============
+04 Jul 2020:
+============
+
+1) What is PCIe ?
+	PCIe is a successor of PCI and PCI X buses that uses serial point to point link instead of
+	parallel shared bus topology, Since PCIe is serial, it only requires a signle lane 
+	(TX, RX, diffrential pairs) and no control signals are used. Since PCIe has TX and RX pairs
+	it can achieve simultaneous biderictional transfer (full duplex). Like all serial protocols 
+	PCIe is also a packet based protocol.
+
+2) Does PCIe retain software backward compatability with older PCI standards ?
+	yes, PCIe maintains full backward software compatability with older PCI standards so drivers
+	written serveral years ago for PCI will still work with PCIe.
+
+3) What are the various layers of PCIe ?
+	PCI Core layer, Transaction Layer, Data Link layer and Physical layer.
+
+4) What is BDF in PCIe ?
+	Bus, Device and Function, configuration software is responsible for enumerating every bus, device 
+	and function on given topology. Enumeration software uses depth first search for enumeration. 
