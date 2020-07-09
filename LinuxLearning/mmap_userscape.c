@@ -34,7 +34,7 @@ int main()
 
 	/* use 'map' pointer to access the mapped area! */
 	for (i = 0; i < 16; i++){
-		printf("content: 0x%x\n", *(map+i));
+		printf("content @ [%04x]: 0x%08x\n", ((i +1) * sizeof(int)), *(map+i));
 	}
 
 	/* unmap the area & error checking */
