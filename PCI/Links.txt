@@ -38,3 +38,7 @@ https://stackoverflow.com/questions/12414024/how-can-the-linux-kernel-be-forced-
 
 12) System Architecture form BIOS developer perespective (System memory map, PCI enumeration etc)
 https://www.youtube.com/watch?v=4hr1aXf2ark&list=PLBTQvUDSl81dTG_5Uk2mycxZihfeAYTRm
+
+13) Is it possible to do enumeration without restart the PC?
+(Enumeration is done twice. Once at BIOS level and then it forwards to the OS..So if it's possible at all, the driver will need to ask the kernel/OS to re-enumerate)
+https://forums.xilinx.com/t5/PCIe-and-CPM/Is-it-possible-to-do-enumeration-without-restart-the-PC/td-p/740999
