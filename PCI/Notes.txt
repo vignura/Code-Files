@@ -130,3 +130,52 @@
 4) What is BDF in PCIe ?
 	Bus, Device and Function, configuration software is responsible for enumerating every bus, device 
 	and function on given topology. Enumeration software uses depth first search for enumeration. 
+
+============
+12 Jul 2020:
+============
+
+1) What is PCI configuration space ?
+	The PCI configuration space is the standard interface through which the software can read and discover the 
+	capabilities and the resource requirement of the PCI device (MMIO, IO, using the BARs) so that it (software)
+	can allocate it. Usually the configuration space is 256 bytes in size, but it is extended to 4 KB is PCIe.
+
+2) What is PCI enumeration ?
+	PCI enumeration is the process by which the software (BIOS / bootloader / kernel OS) discovers the PCI hierarchy, 
+	ie, discovers the buses, the devices, and the individual functions in those devices, allocate resources (memory
+	by programing the BARs) to those devices so that they can be used by the system.
+
+3) How can a software find the type (Memory or IO) and size of the resource requsted by the PCI function ?
+	Again using the BARs (Base Address Registers), the software can find out the type and size of the resource requseted
+	by a PCI function. If the 0th bit of the BAR is set, then it is a IO request else it is a memory request. By writing 
+	all ones (0xFFFFFFFF) into the register, and reading back the register, the software can discover the size of the 
+	request (using the number of zeros returned).
+
+4) How does the software differntiate between a PCI endpoint and a PCI bridge ?
+	The software uses the PCI header type field in the configuration space to differentiate a PCI bridge and a PCI endpoint.
+	A PCI bridge will have a "Type 1" header and a PCI endpoint will have a "Type 0" header.
+
+5) Describe the software flow of PCI enumeration.
+	
+	For each domain in the system (max 0xFFFF):
+		For each bus in that domain (max 256 buses): 
+		 	For each device in that bus (max 32 devices):
+		 		
+		 		if the device is a endpoint:
+					For each function in that endpoint device (max 32 functions):
+						find the resource required using BARs and alloate them (ie program the DRAM controller with
+						address range available from MIMO range) and program the BARs with allocated base address.
+					end
+
+				else
+					The device is a PCI bridge, so create a new bus and enumerate it, allocate resorces to it 
+					and update the Base and Limit registers.
+
+				end
+
+			end
+		end
+	end
+
+
+6) When does PCI enumeration takes place in a PC ? and when in a development board ? what are the differences ?

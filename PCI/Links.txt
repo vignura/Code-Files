@@ -23,3 +23,18 @@ https://www.nextplatform.com/2017/07/14/system-bottleneck-shifts-pci-express/
 
 7) Memory mapped IO vs Port mapped IO
 https://www.bogotobogo.com/Embedded/memory_mapped_io_vs_port_mapped_isolated_io.php
+
+8) How does base address register gets address?
+https://stackoverflow.com/questions/24061171/how-does-base-address-register-gets-address
+
+9) How to read extended PCIE configuration space in Linux?
+https://stackoverflow.com/questions/6341540/how-to-read-extended-pcie-configuration-space-in-linux
+
+10) What is difference between U-Boot and BIOS ?
+https://superuser.com/questions/708196/what-is-difference-between-u-boot-and-bios
+
+11) How can the linux kernel be forced to enumerate the PCI-e bus?
+https://stackoverflow.com/questions/12414024/how-can-the-linux-kernel-be-forced-to-enumerate-the-pci-e-bus
+
+12) System Architecture form BIOS developer perespective (System memory map, PCI enumeration etc)
+https://www.youtube.com/watch?v=4hr1aXf2ark&list=PLBTQvUDSl81dTG_5Uk2mycxZihfeAYTRm

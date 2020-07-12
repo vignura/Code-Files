@@ -3,7 +3,6 @@
 #include <linux/compiler.h>
 
 MODULE_INFO(vermagic, VERMAGIC_STRING);
-MODULE_INFO(name, KBUILD_MODNAME);
 
 __visible struct module __this_module
 __attribute__((section(".gnu.linkonce.this_module"))) = {
@@ -22,28 +21,27 @@ MODULE_INFO(retpoline, "Y");
 static const struct modversion_info ____versions[]
 __used
 __attribute__((section("__versions"))) = {
-	{ 0x7ef3190f, __VMLINUX_SYMBOL_STR(module_layout) },
-	{ 0x5ff056f3, __VMLINUX_SYMBOL_STR(class_unregister) },
-	{ 0x91bda9a9, __VMLINUX_SYMBOL_STR(device_destroy) },
-	{ 0x9491b702, __VMLINUX_SYMBOL_STR(class_destroy) },
+	{ 0x6c90af03, __VMLINUX_SYMBOL_STR(module_layout) },
+	{ 0xf30a05be, __VMLINUX_SYMBOL_STR(class_unregister) },
+	{ 0x6cd19c73, __VMLINUX_SYMBOL_STR(device_destroy) },
+	{ 0x990f6646, __VMLINUX_SYMBOL_STR(class_destroy) },
 	{ 0x6bc3fbc0, __VMLINUX_SYMBOL_STR(__unregister_chrdev) },
-	{ 0x2aee63f4, __VMLINUX_SYMBOL_STR(__mutex_init) },
-	{ 0x51521308, __VMLINUX_SYMBOL_STR(kmem_cache_alloc_trace) },
-	{ 0x1251a9b3, __VMLINUX_SYMBOL_STR(kmalloc_caches) },
-	{ 0xb7f96077, __VMLINUX_SYMBOL_STR(device_create) },
-	{ 0x339b7a65, __VMLINUX_SYMBOL_STR(__class_create) },
-	{ 0xe10a5298, __VMLINUX_SYMBOL_STR(__register_chrdev) },
-	{ 0xf4fa543b, __VMLINUX_SYMBOL_STR(arm_copy_to_user) },
-	{ 0xfa2a45e, __VMLINUX_SYMBOL_STR(__memzero) },
-	{ 0x97255bdf, __VMLINUX_SYMBOL_STR(strlen) },
+	{ 0x826b144d, __VMLINUX_SYMBOL_STR(__mutex_init) },
+	{ 0x69799446, __VMLINUX_SYMBOL_STR(kmem_cache_alloc_trace) },
+	{ 0xe4b19e11, __VMLINUX_SYMBOL_STR(kmalloc_caches) },
+	{ 0xde430b13, __VMLINUX_SYMBOL_STR(device_create) },
+	{ 0x63f97ae1, __VMLINUX_SYMBOL_STR(__class_create) },
+	{ 0xd31cc78e, __VMLINUX_SYMBOL_STR(__register_chrdev) },
+	{ 0xc671e369, __VMLINUX_SYMBOL_STR(_copy_to_user) },
+	{ 0x754d539c, __VMLINUX_SYMBOL_STR(strlen) },
 	{ 0x91715312, __VMLINUX_SYMBOL_STR(sprintf) },
-	{ 0x28cc25db, __VMLINUX_SYMBOL_STR(arm_copy_from_user) },
-	{ 0x7f23a6b3, __VMLINUX_SYMBOL_STR(mutex_trylock) },
-	{ 0x2e5810c6, __VMLINUX_SYMBOL_STR(__aeabi_unwind_cpp_pr1) },
+	{ 0xb5419b40, __VMLINUX_SYMBOL_STR(_copy_from_user) },
+	{ 0x88db9f48, __VMLINUX_SYMBOL_STR(__check_object_size) },
+	{ 0xaf5fca8a, __VMLINUX_SYMBOL_STR(mutex_trylock) },
 	{ 0x27e1a049, __VMLINUX_SYMBOL_STR(printk) },
-	{ 0xe4ca3b4f, __VMLINUX_SYMBOL_STR(mutex_unlock) },
+	{ 0xbaab9735, __VMLINUX_SYMBOL_STR(mutex_unlock) },
 	{ 0x37a0cba, __VMLINUX_SYMBOL_STR(kfree) },
-	{ 0xb1ad28e0, __VMLINUX_SYMBOL_STR(__gnu_mcount_nc) },
+	{ 0xbdfb6dbb, __VMLINUX_SYMBOL_STR(__fentry__) },
 };
 
 static const char __module_depends[]
