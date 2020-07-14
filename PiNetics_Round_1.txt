@@ -1,0 +1,150 @@
+
+Sr Embedded Engineer Positions
+Round 1 - Online test. There is no time limit to complete the test, however, it is designed to last about 40 mins. 
+Required
+
+------------------------------------------------
+1: Write a program to find greatest of 3 numbers
+------------------------------------------------
+
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_NUMS		3
+
+int main(int argc, char const *argv[])
+{
+	int iIndex = 0;
+	int iRetVal = 0;
+	int iNum[MAX_NUMS] = {0};
+	int iLargestNum = 0;
+
+	if(argc != 4)
+	{
+		printf("usage: %s [num1] [num2] [num3]\n", argv[0]);
+		return 0;
+	}
+
+	/* scan arguments from command line */
+	/* iIndex+1 is used to skip the first arg which the name of the executable */
+	for (iIndex = 0; iIndex < MAX_NUMS; iIndex++)
+	{
+		iRetVal = sscanf(argv[iIndex + 1], "%d", &iNum[iIndex]);
+		if(iRetVal != 1)
+		{
+			printf("ERROR: sscanf\n");
+		}
+	}
+
+	/* find the largest number */
+	/* set the iLargestNum to first arg, so that
+		we don't return zero as largest value if all
+		theree numbers are negative */
+	iLargestNum = iNum[0];
+	/* starting loop index at 1 as we have already assigned 
+		iLargestNum to first argument */
+	for (iIndex = 1; iIndex < MAX_NUMS; iIndex++)
+	{
+		if(iLargestNum < iNum[iIndex])
+		{
+			iLargestNum = iNum[iIndex];
+		}
+	}
+
+	printf("Largest Number: %d\n", iLargestNum);
+
+	return 0;
+}
+-----------------------
+2: What is the value of
+-----------------------
+sizeof(a) /sizeof(char *) in a code snippet: 
+Char *a[4]={"sridhar","raghava","shashi","srikanth"};
+
+four
+
+--------------------------------------------------------------------------
+3 How will you pass arguments to “C” function from assembly language code?
+--------------------------------------------------------------------------
+
+Through registers
+
+-------------------------------------------------------
+4 What is the life and scope of Global static variable?
+-------------------------------------------------------
+Life time of global variable is the life time of the program and scope is global scope
+
+
+---------------------------------------------------------------------------------
+5 What is the return type of main() function? Where does main function returns?
+---------------------------------------------------------------------------------
+Return type of the main function is int and it returns to the operating system.
+
+----------------------------------------------
+6 What is ISR, what is the return type of ISR?
+----------------------------------------------
+
+ISR stands for interrupt sub routine, a function that it called after a particular interrupt has occurred, the return type is void.
+
+-------------------------------------
+7 What is the term interrupt latency?
+-------------------------------------
+Interrupt latency is the time delay between the interrupt generation and servicing of that interrupt.
+
+--------------------------------------------------------------
+8 What is Stack memory and what are the usage of stack memory?
+--------------------------------------------------------------
+Stack Memory is a stack, ie, Last in First out memory allocated by the OS for each process. Stack is used for allocating memory for local variables.  
+
+------------------------------------------------------------------------------
+9 What is a Watchdog timer; explain its usage in embedded system with example?
+------------------------------------------------------------------------------
+Watchdog timer is a timer that resets the processor on overflow, so the processor should periodically clear the watchdog timer to avoid unnecessary reset. Watchdog timer is used to prevent the processor form "hanging", like a infinite loop. 
+
+--------------------------------------------------
+10 Why FIQ is faster than IRQ in ARM architecture?
+--------------------------------------------------
+Because FIQ has higher proirity
+
+----------------------------------------------------------------------------------------
+11 Which functional unit of ARM family architecture is responsible for shift operations?
+----------------------------------------------------------------------------------------
+Barrel shifter
+
+-----------------------------------------------
+12 What is the current through the Zener diode?
+-----------------------------------------------
+0 mA
+7 mA
+8.3 mA
+13 mA
+
+--------------------------------------
+13 Changes in βdc result in changes in
+--------------------------------------
+Ic
+Vce
+The Q point
+All of the above
+
+All of the above
+
+---------------------------------------------------------------------------------
+14 Exclusive-OR (XOR) logic gates can be constructed from what other logic gates?
+---------------------------------------------------------------------------------
+OR gates only
+AND gates and NOT gates
+AND gates, OR gates, and NOT gates
+OR gates and NOT gates
+
+AND gates, OR gates, and NOT gates
+
+--------------------------------------
+15 Refer to this figure. Determine Ic.
+--------------------------------------
+5 A
+5 mA
+0 mA
+10 mA
+
+5 mA
