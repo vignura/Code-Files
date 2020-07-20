@@ -33,6 +33,7 @@ int main(int argc, char const *argv[])
 		if(iRetVal != 1)
 		{
 			printf("ERROR: sscanf\n");
+			return 0;
 		}
 	}
 

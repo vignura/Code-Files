@@ -14,6 +14,7 @@
 // #define DDR_RAM_PHYS  	0xb3400000
 #define DDR_RAM_PHYS  	0xb4405c00
 
+
 int main(int argc, char const *argv[])
 {
 	int i = 0;
@@ -38,6 +39,11 @@ int main(int argc, char const *argv[])
 	sscanf(argv[3], "%d", &ulReadsize);
 	printf("Read Size: %d\n", ulReadsize);
 
+	if(ulReadsize > ulMapSize)
+	{
+		printf("Read size should be less than or equal to Map size\n");
+		return 0;
+	}
 
 	/* open /dev/mem and error checking */
 	fdmem = open( memDevice, O_RDWR | O_SYNC );
@@ -59,7 +65,7 @@ int main(int argc, char const *argv[])
 	}
 
 	/* use 'map' pointer to access the mapped area! */
-	for (i = 0; i < ulReadsize; i++){
+	for (i = 0; i < (ulReadsize / sizeof(int)); i++){
 		printf("[%04x]: 0x%08x\n", ((i +1) * sizeof(int)), map[i]);
 	}
 
