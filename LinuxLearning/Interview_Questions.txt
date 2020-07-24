@@ -232,3 +232,56 @@ What is GDI used for?
 Juniper Networks:
 =================
 1) Reverse a List
+
+
+========
+Comcast:
+========
+1) Storage classes in C ? (Auto, static, global, extern)
+2) Process memory layout in linux ? explain the various segments of the executable file ? (text, data, bss, stack and heap) 
+3) Declare a varible "static int a;" in a header file and include it two or more c files and comiple it, what would happen ?
+	* will it be a compiler error ?
+	* if the code compiles, then if that static variable is modified in one file will it affect the value of the 
+	  variable included in another file ?
+4) What is the difference between "scope" of a variable and "life" of a variable 
+5) What is an inode ? (linux file system structure)
+6) What is the difference between hard links and soft links in linux ?
+	* what happens to the link files if the original file pointed the link is changed ?
+7) Explain the structs and unions in c
+8) which is faster ? switch or if ? why ? (switch due to compile time resolution of paths)
+	* what types are allowed in switch case expressions ? (only integer types no floating points)
+	* can we use expressions like (a * b) in switch case ? (only if a and b are macros or const ints)
+9) what is the difference between declaration and definition in function as well as variable context ?
+	* how can we just make a declaration for a varible ? (extern)
+10) Explain how GTA which would require lot more memory than 2 GB still runs at low performance in a 2 GB laptop ?
+	(user space applictions uses virtual memory)
+11) Explain virtual memory in linux.
+	* who makes the convertion from virtual memory to physical memory ? (Memory Management Unit)
+	* Consider two processes A and B; I am doing a malloc in A and some how pass the pointer that i got 
+	  to process B, if process B changes that value what will happen ? (segfault; as A and B will have seperate 
+	  virtual addresses and the pointer would be out of B's virtual address space)
+	* now how does shared memory works as it would also use similar mechanisms to malloc to allocate memory ?
+	 (kernel allocates seperate virtual memories to each process such that they all point to same physical memory)
+	* what is swapping ? why is swap partition do ? how does this come in virtual memory ? (when  a process is 
+	  idle it will be swapped to swap partition and back to RAM when active) 
+12) In pthreads, what is a detached thread ? (a thread whose stack would be freed after it exits)
+	* what happens if create a infinite thread from main without pthread_join ?
+	* how will pass an argument to a thread ?
+	* how to get the return value of infinite thread that some how breaks ? (pthread_join)
+	* what happens if there is no call to pthread_join or pthread_detach after pthread_create ? 
+	  assume that there are other infinite threads running (memory leak; valgrind would catch it)
+13) What is reentrant functions ?
+	* what would you use make a functions reentrant ? (mutexes, avoid globals)
+14) how does a system call work ? ie how the processor switches from user space to kernel space ?
+	* what are interrupts ?
+	* what are interrupt vector tables ? what do they have (interrupt numbers and thier vectors)
+	* how does an ISR gets called after an interrupt ? explain the process ?
+	* what is trap interrupt ? now explain system calls ?
+ 15) We are now on a video call, what protocol will it be using ? (UDP)
+ 	* is there any packet loss in a video call ? based on packet loss explain what protocol a video call 
+ 	  might be using ?
+ 	* explain the differnce between UDP and TCP ?
+ 	(conneted vs connection less; no loss vs best effort; in order delivery vs out of order delivery etc)
+ 	* how does retransmission work in TCP ? what does it use to resolve the acks (sequence numbers)
+16) explain object slicing and virtual displacement in c++ ?
+
