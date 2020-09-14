@@ -15,7 +15,7 @@ int main()
 	/* get file path form user */
 	cout << "enter the file name: ";
 	cin >> filename;
-	ifstream myfile(filename,ios::in|ios::binary|ios::ate);
+	ifstream myfile(filename, ios::in|ios::binary);
 	
 	if(!myfile.is_open())
 	{	
@@ -26,24 +26,25 @@ int main()
 	cout << filename << " opened successfully" << endl;
 	do
 	{	
+		// cout << "Eof: " << myfile.eof() << endl;
 		myfile.read(x, HASH_SIZE);
 
 		/* compute hash */
-		for(i = 0; i < HASH_SIZE; i++)
+		// for(i = 0; i < HASH_SIZE; i++)
+		for(i = 0; i < myfile.gcount(); i++)
 		{	
+			// cout << x[i];
 			x[i] = x[i] ^ x1[i];
 			x1[i] = x[i];
 		}
 		
-		cout << "Eof: " << myfile.eof() << endl;
-		
 	}while(!myfile.eof());
 	
-	/* print the hash value */
+	/* print the hash value  */
 	cout << "Hash: ";
 	for(int i = 0; i < HASH_SIZE; i++)
 	{	
-		cout << x[i];
+		cout << ((int)x[i]);
 	}
 	cout << endl;
 

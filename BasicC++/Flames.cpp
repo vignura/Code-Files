@@ -1,26 +1,18 @@
- #include<iostream>
+#include<iostream>
 using namespace std;
+
 class Flames
 {
 	char name1[20],name2[20],x[6][6];
 	int Fcount,ln1,ln2;
-	public:
+public:
 	Flames();
 	void getName();
 	void strikeOut();
 	void flame();
 	void display();
 };
-int main()
-{
-	Flames f;
-	cout<<"FLAMES"<<endl;
-	f.getName();
-	f.strikeOut();
-	f.flame();
-	f.display();
-	return 0;
-}
+
 Flames::Flames()
 {
 	for(int i=0;i<6;i++)
@@ -68,7 +60,7 @@ void Flames::strikeOut()
 				a-=32;
 			}
 			else
-			{a+=32;}
+				{a+=32;}
 			if((b==a)|(b==name1[i]))
 			{
 				name2[j]='1';
@@ -77,8 +69,9 @@ void Flames::strikeOut()
 			}
 		}	
 	}
-Fcount+=(ln1+ln2-(2*count));
+	Fcount+=(ln1+ln2-(2*count));
 }
+
 void Flames::flame()
 {
 	int i,j,Fcount_tmp=Fcount;
@@ -104,15 +97,25 @@ void Flames::flame()
 }
 void Flames::display()
 {
-	char a=x[0][5];
+	char a = x[0][5];
 	switch(a)
 	{
-	case 'F':{cout<<"Friends"<<endl;break;}
-	case 'L':{cout<<"Love"<<endl;break;}
-	case 'A':{cout<<"Affection"<<endl;break;}
-	case 'M':{cout<<"Marriage"<<endl;break;}
-	case 'E':{cout<<"Enemy"<<endl;break;}
-	case 'S':{cout<<"Sister"<<endl;break;}
+		case 'F':{cout<<"Friends"<<endl;break;}
+		case 'L':{cout<<"Love"<<endl;break;}
+		case 'A':{cout<<"Affection"<<endl;break;}
+		case 'M':{cout<<"Marriage"<<endl;break;}
+		case 'E':{cout<<"Enemy"<<endl;break;}
+		case 'S':{cout<<"Sister"<<endl;break;}
 	}
 }
 
+int main()
+{
+	Flames f;
+	cout<<"FLAMES"<<endl;
+	f.getName();
+	f.strikeOut();
+	f.flame();
+	f.display();
+	return 0;
+}
