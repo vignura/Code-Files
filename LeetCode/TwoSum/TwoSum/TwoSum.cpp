@@ -1,17 +1,32 @@
 // TwoSum.cpp : Defines the entry point for the console application.
 //
-#include <bits/stdc++.h>
-// #include <stdio.h>
-// #include <string.h>
+
+// #include "pch.h"
+#include <iostream>
+#include <stdio.h>
+#include <string.h>
+#include <vector>
+#include <unordered_map>
+#include <ctime>
 
 #define TEST_SIZE			100000
 // #define PRIME_FACTOR		90017
 #define PRIME_FACTOR		12101
 #define INPUT_FILE_NAME 	"TestInput_16-10-2020_14H-58M-21S.bin"
 // #define USE_INPUT_FILE
+
 using namespace std;
 typedef unordered_multimap<int, int>::iterator umit;
 
+void print(unordered_multimap <int, int>& ummap)
+{
+	cout << "[";
+	for (auto x: ummap)
+	{
+		cout << "(" << x.first << ", " << x.second << "), ";
+	}
+	cout << "\b\b]\n";
+}
 
 class Solution {
 public:
@@ -83,6 +98,8 @@ public:
 				ummap.insert(make_pair(nums[i], i));			
 			}
 
+			// print(ummap);
+
 			/* find the two sum */
 			for (auto x: ummap)
 			{
@@ -95,15 +112,24 @@ public:
 				{
 					res[0] = (x.second);
 
-					if(x.second == it->second)
+					if(x.second != it->second) 
 					{
-						pair<umit, umit> pit = ummap.equal_range(diff);
-						pit.first++;
-						res[1] = pit.first->second;
+						res[1] = it->second;
+						break;
 					}
 					else
 					{
-						res[1] = it->second;
+						if (ummap.count(diff) > 1)
+						{
+							pair<umit, umit> pit = ummap.equal_range(diff);
+							pit.first++;
+							res[1] = pit.first->second;
+							break;
+						}
+						else
+						{
+							// do nothing 
+						}
 					}
 				}
 			}
@@ -258,7 +284,7 @@ int main()
 	Solution sol;
 	vector <int> res;
 
-#if 1
+#if 0
 	
 	#ifndef USE_INPUT_FILE
 		vector <int> input;
@@ -271,10 +297,14 @@ int main()
 		target = input[index[0]] + input[index[1]];
 	#endif
 #else
-	vector <int> input = {0, 4, 3, 1};
-	index[0] = 0;
-	index[1] = 3;
-	target = 1;
+	vector <int> input = {217,231,523,52,547,243,648,509,415,149,689,710,265,187,370,56,977,182,400,329,471,805,955,989,255,766,38,566
+							,79,843,295,229,988,108,781,619,704,542,335,307,359,907,727,959,161,699,123,650,147,459,657,188,304,268,405,
+							685,620,721,351,570,899,60,388,771,24,659,425,440,508,373,32,645,409,272,356,175,533,740,370,152,34,510,745,
+							251,227,494,258,527,817,773,178,194,860,387,627,851,449,736,15,212,529,950,316,28,65,484,968,63,4,643,795,
+							669,203,677,139,636,289,555,430,849,150,493,301,377,240,873,965,441,230,349,447,470};
+	index[0] = 27;
+	index[1] = 79;
+	target = 718;
 #endif
 	clock_t start_time = clock();
 
