@@ -6,13 +6,14 @@
 #define PRIME_FACTOR 	12101
 // #define PRIME_FACTOR 	1201
 using namespace std;
+typedef unordered_multimap<int, int>::iterator umit;
 
 // #define USE_INPUT_FILE			
-// #define INPUT_FILE_NAME			"TestInput_20-10-2020_13H-43M-06S.bin"
 #define INPUT_FILE_NAME			"TestInput_20-10-2020_13H-45M-27S.bin"
+// #define INPUT_FILE_NAME			"TestInput_20-10-2020_13H-45M-27S.bin"
 // #define THREE_SUM_TEMPLATE
-#define THREE_SUM_BRUTE_FORCE
-// #define THREE_SUM_HASH_MAP
+// #define THREE_SUM_BRUTE_FORCE
+#define THREE_SUM_HASH_MAP
 
 void genTestInput(vector <int>& input, int size, int index[3], int *target);
 void print(vector<int> &vec, int limit);
@@ -71,10 +72,14 @@ public:
 #ifdef THREE_SUM_HASH_MAP
 	vector<int> ThreeSum(vector<int> &input, int target)
 	{
-		int idiff = 0;
+		int diff = 0;
+		int i2Sum = 0;
 		int i = 0;
-		vector<int> rsult = {0, 0, 0};
+		int iTwoSumfound = 0;
+		vector<int> result = {0, 0, 0};
 		unordered_multimap<int, int> ummap;
+
+		cout << "Three Sum Hashmap\n";
 
 		/* make a hash map */
 		for(i = 0; i < input.size(); i++)
@@ -82,10 +87,56 @@ public:
 			ummap.insert(make_pair(input[i], i));
 		}
 
-		cout << "Three Sum Hashmap\n";
+		
 		for(i = 0; i < input.size(); i++)
 		{
-			idiff = 
+			iTwoSumfound = 0;
+			i2Sum = target - input[i];
+
+			/* two sum algo */
+			for (auto x: ummap)
+			{
+				if(x.first != input[i])
+				{
+					/* compute the difference and check 
+					   wheather it is present in the map */
+					diff = (i2Sum - x.first);
+					umit it = ummap.find(diff);
+
+					if(it != ummap.end())
+					{
+						result[1] = (x.second);
+
+						if(x.second != it->second) 
+						{
+							result[2] = it->second;
+							iTwoSumfound = 1;
+							break;
+						}
+						else
+						{
+							if (ummap.count(diff) > 1)
+							{
+								pair<umit, umit> pit = ummap.equal_range(diff);
+								pit.first++;
+								result[2] = pit.first->second;
+								iTwoSumfound = 1;
+								break;
+							}
+							else
+							{
+								// do nothing 
+							}
+						}
+					}
+				}
+			}
+
+			if(iTwoSumfound)
+			{
+				result[0] = i;
+				break;
+			}
 		}
 
 		return result;
@@ -195,10 +246,10 @@ void print(vector<int> &vec, int limit)
 	
 	if(i < vec.size())
 	{
-		cout << "... ";
+		cout << "...";
 	}
 
-	cout << "\b]\n";
+	cout << "]\n";
 }
 
 short FrameName(char *out_arrcFileName)
