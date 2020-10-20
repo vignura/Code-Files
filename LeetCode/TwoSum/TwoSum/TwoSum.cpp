@@ -2,6 +2,8 @@
 //
 
 // #include "pch.h"
+#pragma GCC push_options
+#pragma GCC optimize ("Ofast")
 #include <iostream>
 #include <stdio.h>
 #include <string.h>
@@ -10,10 +12,10 @@
 #include <ctime>
 
 #define TEST_SIZE			100000
-// #define PRIME_FACTOR		90017
-#define PRIME_FACTOR		12101
-#define INPUT_FILE_NAME 	"TestInput_16-10-2020_14H-58M-21S.bin"
-// #define USE_INPUT_FILE
+#define PRIME_FACTOR		90017
+// #define PRIME_FACTOR		12101
+#define INPUT_FILE_NAME 	"TestInput_16-10-2020_23H-04M-57S.bin"
+#define USE_INPUT_FILE
 
 using namespace std;
 typedef unordered_multimap<int, int>::iterator umit;
@@ -140,6 +142,7 @@ public:
 #endif
 
 };
+#pragma GCC pop_options
 
 void genRandNum(vector<int> &num, int size, int limit)
 {
@@ -284,7 +287,7 @@ int main()
 	Solution sol;
 	vector <int> res;
 
-#if 0
+#if 1
 	
 	#ifndef USE_INPUT_FILE
 		vector <int> input;
