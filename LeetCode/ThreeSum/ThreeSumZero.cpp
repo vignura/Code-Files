@@ -18,7 +18,8 @@ typedef unordered_set<int>::iterator usit;
 #define NUMS_FILE_NAME			"Testnums_20-10-2020_13H-45M-27S.bin"
 // #define NUMS_FILE_NAME			"Testnums_20-10-2020_13H-45M-27S.bin"
 // #define THREE_SUM_BRUTE_FORCE
-#define THREE_SUM_HASH_MAP
+#define THREE_SUM_HASH_MAP_1
+// #define THREE_SUM_HASH_MAP_2
 
 void genTestnums(vector <int>& nums, int size);
 void print(vector<int> &vec);
@@ -128,7 +129,7 @@ public:
 	}
 #endif
 
-#ifdef THREE_SUM_HASH_MAP
+#ifdef THREE_SUM_HASH_MAP_1
 	vector<vector<int>> ThreeSum(vector<int> &nums)
 	{
 		int diff = 0;
@@ -220,6 +221,112 @@ public:
 		return res;
 	}
 #endif
+
+#ifdef THREE_SUM_HASH_MAP_2
+	vector<vector<int>> ThreeSum(vector<int> &nums)
+	{
+		int diff = 0;
+		int count = 0;
+		int i, j, k;
+		int iTwoSumfound = 0;
+		vector<int> result = {0, 0, 0};
+		vector<vector<int>> res;
+		unordered_multimap<int, int> ummap;
+
+		cout << "Three Sum Hashmap\n";
+		if(nums.size() < 3)
+        {
+            return res;
+        }
+
+		/* make a hash map, fill with zeros */
+		for(i = 0; i < nums.size(); i++)
+		{
+			ummap.insert(make_pair(nums[i], 0));
+		}
+
+		print(ummap);
+
+		for (umit i = ummap.begin(); i != ummap.end(); i++)
+		{
+			for (umit j = ummap.begin()++; j != ummap.end(); j++)	
+			{
+				diff = -((i->first) + (j->first));
+				count = ummap.count(diff);
+
+				#ifdef THREESUM_PRINT
+					// cout << "[i j]: [" << i << " " << j << "]\t";
+					// cout << "nums: [" << nums[i] << " " << nums[j] << "]\t";
+					// cout << "diff: " << diff << " \tcount: " << count;
+				#endif
+
+				if(count == 1)
+				{
+					umit k = ummap.find(diff);
+					if((i->second + j->second + k->second) < 3)
+					{
+						result[0] = i->first;
+						result[1] = j->first;
+						result[2] = k->first;
+						res.push_back(result);
+						
+						/* make all the nodes as visited 
+						  so this pair never shows again */
+						i->second = 1;
+						j->second = 1;
+						k->second = 1;
+						#ifdef THREESUM_PRINT
+							cout << "\tmatched 1";
+							print(ummap);
+						#endif
+					}	
+				}
+				else if (count > 1)
+				{
+					pair<umit, umit> pit = ummap.equal_range(diff);
+					pit.first++;
+					if((i->second + j->second + pit.first->second) < 3)	
+					{
+						result[0] = i->first;
+						result[1] = j->first;
+						result[2] = pit.first->first;
+						res.push_back(result);
+						
+						/* make all the nodes as visited 
+						  so this pair never shows again */
+						i->second = 1;
+						j->second = 1;
+						pit.first->second = 1;
+
+						#ifdef THREESUM_PRINT
+							cout << "\tmatched 2";
+							print(ummap);
+						#endif
+					}
+				}
+				else
+				{
+					// do nothing		
+				}
+
+				#ifdef THREESUM_PRINT
+					// cout << endl;
+				#endif
+			}	
+		}
+
+		#ifdef THREESUM_PRINT
+			for (int x = 0; x < res.size(); x++)
+			{
+				cout << x << " ";
+				print(res[x]);
+			}
+			cout << "Removing duplicates" << endl;
+		#endif
+		remove_duplicates(res);
+		return res;
+	}
+#endif
 };
 
 int main(int argc, char const *argv[])
@@ -230,6 +337,7 @@ int main(int argc, char const *argv[])
 		#define MANUAL_nums
 		#ifdef MANUAL_nums
 			vector<int> nums = {5,-9,-11,9,9,-4,14,10,-11,1,-13,11,10,14,-3,-3,-4,6,-15,6,6,-13,7,-11,-15,10,-8,13,-14,-12,12,6,-6,8,0,10,-11,-8,-2,-6,8,0,12,3,-9,-6,8,3,-15,0,-6,-1,3,9,-5,-5,4,2,-15,-3,5,13,-11,7,6,-4,2,11,-5,7,12,-11,-15,1,-1,-9,10,-8,1,2,8,11,-14,-4,-3,-12,-2,8,5,-1,-9,-4,-3,-13,-12,-12,-10,-3,6,1,12,3,-3,12,11,11,10};
+			// vector<int> nums = {-4,-2,1,-5,-4,-4,4,-2,0,4,0,-2,3,1,-5,0};
 		#else
 			vector<int> nums;
 			/* generate nums */
