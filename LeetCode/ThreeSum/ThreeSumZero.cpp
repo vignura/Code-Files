@@ -1,8 +1,17 @@
 #include <iostream>
 #include <vector>
+#include <list>
 #include <unordered_map>
 #include <unordered_set>
 #include <ctime>
+/* for segfault handler */
+#include <stdio.h>
+#include <unistd.h>
+#include <signal.h>
+#include <string.h>
+#include <stdlib.h>
+#include <execinfo.h>
+
 
 #define TEST_SIZE		10000
 #define PRIME_FACTOR 	12101
@@ -10,6 +19,7 @@
 using namespace std;
 typedef unordered_multimap<int, int>::iterator umit;
 typedef unordered_set<int>::iterator usit;
+typedef list<vector<int>>::iterator lit;
 
 // #define REMOVE_DUPLICATES_PRINT
 // #define THREESUM_PRINT
@@ -21,6 +31,9 @@ typedef unordered_set<int>::iterator usit;
 #define THREE_SUM_HASH_MAP_1
 // #define THREE_SUM_HASH_MAP_2
 
+#define REMOVE_DUPLICATE_VECTOR
+// #define REMOVE_DUPLICATE_LIST
+
 void genTestnums(vector <int>& nums, int size);
 void print(vector<int> &vec);
 void print(vector<int> &vec, int limit);
@@ -30,9 +43,111 @@ void Lognums(vector<int> &vec);
 void genRandNum(vector<int> &num, int size, int limit);
 void print(unordered_multimap<int, int>& umap);
 
+#define SIZE		100
+
+void sigsegv_handler(int signo)
+{
+	void *array[SIZE];
+	int iRetVal;
+
+	printf("\nSegfault: %d\n", signo);
+	printf("Stack Trace:\n");
+	iRetVal = backtrace(array, SIZE);
+	// printf("backtrace returned: %d\n", iRetVal);
+	// backtrace_symbols_fd(array, SIZE, STDERR_FILENO);
+	backtrace_symbols_fd(array, iRetVal, STDERR_FILENO);
+	abort();
+}
+
+#pragma push_options
+#pragma GCC optimize("Ofast")
+
 class Solution {
 
 public:
+
+#ifdef REMOVE_DUPLICATE_LIST
+	void remove_duplicates(vector<vector<int>>& res)
+	{
+		int count = 0;
+		int I = 0;
+		int J = 0;
+		int K = 0;
+		unordered_multiset<int> triplet;
+		/* initialize the list */
+		list<vector<int>> lres(res.begin(), res.end());
+		
+		#ifdef REMOVE_DUPLICATES_PRINT
+			/* print the list */
+			for(auto x : lres)
+			{
+				cout << K << " ";
+				print(x);
+				K++;
+			}
+		#endif
+
+		/* remove recurring tripplets */
+		for(lit i = lres.begin(); i != lres.end(); i++)
+		{
+			J = 0;
+			for(lit j = i; j != lres.end(); j++)
+			{
+				if(i == j)
+				{
+					continue;
+				}
+
+				#ifdef REMOVE_DUPLICATES_PRINT
+					cout << "[i j]: [" << I << " "<< J << "]\n";
+				#endif
+
+				triplet.clear();
+				count = 0;
+				
+				/* insert the first triplet */
+				for(int k = 0; k < (*i).size(); k++)
+				{
+					triplet.insert((*i)[k]);	
+				}
+				
+				// cout << "for 1\n";
+				/* check weather all the elements are
+				   present in the set */
+				for(int k = 0; k < (*j).size(); k++)
+				{
+					usit it = triplet.find((*j)[k]);
+					if(it != triplet.end())
+					{
+						triplet.erase(it);
+						count++;
+					}	
+				}
+
+				// cout << "for 2\n";
+
+				if(count == 3)
+				{
+					#ifdef REMOVE_DUPLICATES_PRINT
+						cout << "Removing";
+						print(*j);
+					#endif
+					j = lres.erase(j);
+					j--; /* as the element is removed */
+				}
+
+				J++;
+			}
+
+			I++;
+		}
+
+		res.clear();
+		res.insert(res.end(), lres.begin(), lres.end());
+	}
+#endif
+
+#ifdef REMOVE_DUPLICATE_VECTOR
 	void remove_duplicates(vector<vector<int>>& res)
 	{
 		int i, j, k;
@@ -96,6 +211,8 @@ public:
 			}
 		}
 	}
+#endif
+
 #ifdef THREE_SUM_BRUTE_FORCE
 	vector<vector<int>> ThreeSum(vector<int> &nums)
 	{
@@ -329,10 +446,15 @@ public:
 #endif
 };
 
+#pragma pop_options
 int main(int argc, char const *argv[])
 {
+	int i = 0;
 	vector<vector<int>> result;
 	
+	/* initialize a segfault handler */
+	signal(SIGSEGV, sigsegv_handler);
+
 	#ifndef USE_nums_FILE
 		#define MANUAL_nums
 		#ifdef MANUAL_nums
@@ -359,10 +481,10 @@ int main(int argc, char const *argv[])
 	cout << "Elapsed time: " << static_cast<double>(clock() - start_time)/CLOCKS_PER_SEC << " seconds" << endl;
 
 	cout << "Result:\n";
-	for (auto res: result)
-	{
-		print(res);	
-	}
+	// for (auto res: result)
+	// {	cout << i++ << " ";
+	// 	print(res);	
+	// }
 	
 	return 0;
 }
