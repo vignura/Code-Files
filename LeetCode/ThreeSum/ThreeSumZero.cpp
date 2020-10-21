@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <ctime>
+#include <algorithm>
 /* for segfault handler */
 #include <stdio.h>
 #include <unistd.h>
@@ -27,12 +28,15 @@ typedef list<vector<int>>::iterator lit;
 // #define USE_NUMS_FILE			
 #define NUMS_FILE_NAME			"Testnums_20-10-2020_13H-45M-27S.bin"
 // #define NUMS_FILE_NAME			"Testnums_20-10-2020_13H-45M-27S.bin"
-// #define THREE_SUM_BRUTE_FORCE
-#define THREE_SUM_HASH_MAP_1
-// #define THREE_SUM_HASH_MAP_2
 
-#define REMOVE_DUPLICATE_VECTOR
-// #define REMOVE_DUPLICATE_LIST
+/* 3sum algo types */
+// #define THREE_SUM_BRUTE_FORCE
+// #define THREE_SUM_HASH_MAP_1
+// #define THREE_SUM_HASH_MAP_2
+#define THREE_SUM_SORT
+
+// #define REMOVE_DUPLICATE_VECTOR
+#define REMOVE_DUPLICATE_LIST
 
 void genTestnums(vector <int>& nums, int size);
 void print(vector<int> &vec);
@@ -240,7 +244,7 @@ public:
 				}
 			}
 		}
-
+		// cout << "Size: " << res.size() << " Removing duplicates" << endl;
 		remove_duplicates(res);
 		return res;
 	}
@@ -269,7 +273,9 @@ public:
 			ummap.insert(make_pair(nums[i], i));
 		}
 
-		// print(ummap);
+		#ifdef THREESUM_PRINT
+			print(ummap);
+		#endif
 
 		for(i = 0; i < (nums.size() -1); i++)
 		{
@@ -288,6 +294,7 @@ public:
 				{
 					umit it = ummap.find(diff);
 					if((it->second != i) && (it->second != j))
+					// if(it->second > j)	
 					{
 						result[0] = nums[i];
 						result[1] = nums[j];
@@ -302,18 +309,37 @@ public:
 				else if (count > 1)
 				{
 					pair<umit, umit> pit = ummap.equal_range(diff);
-					pit.first++;
-					if((pit.first->second != i) && (pit.first->second != j))
-					{
-						result[0] = nums[i];
-						result[1] = nums[j];
-						result[2] = pit.first->first;
-						res.push_back(result);
-						
-						#ifdef THREESUM_PRINT
-							cout << "\tmatched 2";
-						#endif
-					}
+
+					#if 0
+						for(int index = 0; index < count; index++)
+						{
+							if((pit.first->second != i) && (pit.first->second != j))
+							{
+								result[0] = nums[i];
+								result[1] = nums[j];
+								result[2] = pit.first->first;
+								res.push_back(result);
+								
+								#ifdef THREESUM_PRINT
+									cout << "\tmatched 2";
+								#endif
+							}
+							pit.first++;
+						}
+					#else
+							pit.first++;
+							if((pit.first->second != i) && (pit.first->second != j))
+							{
+								result[0] = nums[i];
+								result[1] = nums[j];
+								result[2] = pit.first->first;
+								res.push_back(result);
+								
+								#ifdef THREESUM_PRINT
+									cout << "\tmatched 2";
+								#endif
+							}
+					#endif
 				}
 				else
 				{
@@ -327,13 +353,13 @@ public:
 		}
 
 		#ifdef THREESUM_PRINT
-			for (int x = 0; x < res.size(); x++)
-			{
-				cout << x << " ";
-				print(res[x]);
-			}
-			cout << "Removing duplicates" << endl;
+			// for (int x = 0; x < res.size(); x++)
+			// {
+			// 	cout << x << " ";
+			// 	print(res[x]);
+			// }
 		#endif
+		// cout << "Size: " << res.size() << " Removing duplicates" << endl;
 		remove_duplicates(res);
 		return res;
 	}
@@ -444,6 +470,54 @@ public:
 		return res;
 	}
 #endif
+
+#ifdef THREE_SUM_SORT
+	vector<vector<int>> ThreeSum(vector<int> &nums)
+	{
+		int i, j;
+		int st, end;
+		int a, b, c;
+		
+		vector<int> result(3, 0);
+		vector<vector<int>> res;
+		
+		sort(nums.begin(), nums.end());
+
+		for(i = 0; i < (nums.size() -2); i++)
+		{
+			a = nums[i];
+			st = i;
+			end = (nums.size() -1);
+
+			while(st < end)
+			{
+				b = nums[st];
+				c = nums[end];
+
+				if((a + b + c) == 0)
+				{
+					result[0] = a;
+					result[1] = b;
+					result[2] = c;
+					res.push_back(result);
+
+					st++;
+					end--;
+				}
+				else if((a + b + c) > 0)
+				{
+					end--;
+				}
+				else{
+					st++;
+				}
+			}
+		}
+
+		remove_duplicates(res);
+		return res;
+	}
+#endif
 };
 
 #pragma pop_options
@@ -472,7 +546,7 @@ int main(int argc, char const *argv[])
 
 	/* print numss */
 	cout << "nums: ";
-	print(nums, 10);
+	print(nums, 20);
 	
 	Solution sol;
 
@@ -481,10 +555,10 @@ int main(int argc, char const *argv[])
 	cout << "Elapsed time: " << static_cast<double>(clock() - start_time)/CLOCKS_PER_SEC << " seconds" << endl;
 
 	cout << "Result:\n";
-	// for (auto res: result)
-	// {	cout << i++ << " ";
-	// 	print(res);	
-	// }
+	for (auto res: result)
+	{	cout << i++ << " ";
+		print(res);	
+	}
 	
 	return 0;
 }
