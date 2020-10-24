@@ -117,7 +117,7 @@ int main(int argc, char const *argv[])
 	words = (text.size() / CHARS_PER_WORD);
 	speed_wpm = (words / (time.count() / 1000)) * 60;
 	accuracy = ((double)(text.size() - errors) / text.size()) * 100;
-	cout << "words typed: "  << words << " time: " << (time.count() / 1000) << " sec" << endl;
+	cout << "\nwords typed: "  << words << " time: " << (time.count() / 1000) << " sec" << endl;
 	cout << "Speed: " << speed_wpm << " wpm " << "Accuracy: " << accuracy << " %" << endl;
 
 	return 0;
