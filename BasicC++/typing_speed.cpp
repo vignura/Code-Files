@@ -10,6 +10,10 @@
 #include <termios.h>
 
 #define CHARS_PER_WORD		5
+#define RANDOM_INPUT
+#define RAND_TEXT_SIZE		(CHARS_PER_WORD * 50)
+#define CHAR_SET_SIZE		26 /* english alphabets */
+#define WORD_PER_LINE		12
 #define INPUT_FILE			"/home/vignesh/Desktop/Typing_test.txt"
 
 using namespace std;
@@ -74,6 +78,30 @@ void print(vector<char> text)
 	}
 }
 
+void randtext(vector<char>& text, int size)
+{
+	char ch = 0;
+	srand(time(NULL));
+	for(int i = 1; i <= size; i++)
+	{
+		if((i % (CHARS_PER_WORD * WORD_PER_LINE)) == 0)
+		{
+			ch = '\n';	
+		}
+		else if((i % CHARS_PER_WORD) == 0)
+		{
+			ch = ' ';
+		}
+		else
+		{
+			ch = (rand() % CHAR_SET_SIZE) + 'a';
+		}
+		text.push_back(ch);
+	}
+	/* remove the trialing space */
+	text.pop_back();
+}
+
 int main(int argc, char const *argv[])
 {
 	char ch = 0;
@@ -85,7 +113,13 @@ int main(int argc, char const *argv[])
 	double accuracy = 0;
 
 	cout << "Typing speed calculator\n";
-	readtext(INPUT_FILE, input);
+
+	#ifdef RANDOM_INPUT
+		randtext(input, RAND_TEXT_SIZE);
+	#else
+		readtext(INPUT_FILE, input);
+	#endif
+
 	cout << "\n";
 	print(input);
 	cout << "\n\n";
