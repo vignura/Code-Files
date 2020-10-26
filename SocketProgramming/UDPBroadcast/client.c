@@ -1,7 +1,7 @@
 // Broadcast_client.cpp : Defines the entry point for the console application.
 //
+#include "stdafx.h"
 #ifdef _WIN32
-    #include "stdafx.h"
     #include <Winsock2.h> // before Windows.h, else Winsock 1 conflict
     #include <Ws2tcpip.h> // needed for ip_mreq definition for multicast
     #include <Windows.h>
