@@ -1,3 +1,7 @@
+/* 
+ refer : https://stackoverflow.com/questions/26423537/how-to-position-the-input-text-cursor-in-c/26423946
+ for escape sequance usage. 
+*/
 #include <chrono>
 #include <iostream>
 #include <ctime>
@@ -10,11 +14,11 @@
 #include <termios.h>
 
 #define CHARS_PER_WORD		5
-#define RANDOM_INPUT
-#define RAND_TEXT_SIZE		(CHARS_PER_WORD * 50)
+// #define RANDOM_INPUT
+#define RAND_TEXT_SIZE		(CHARS_PER_WORD * 10)
 #define CHAR_SET_SIZE		26 /* english alphabets */
 #define WORD_PER_LINE		12
-#define INPUT_FILE			"/home/vignesh/Desktop/Typing_test.txt"
+#define INPUT_FILE			"input1.txt"
 
 using namespace std;
 using namespace std::chrono;
@@ -95,6 +99,7 @@ void randtext(vector<char>& text, int size)
 		else
 		{
 			ch = (rand() % CHAR_SET_SIZE) + 'a';
+			// ch = 'z' - (rand() % CHAR_SET_SIZE);
 		}
 		text.push_back(ch);
 	}
@@ -112,14 +117,26 @@ int main(int argc, char const *argv[])
 	double speed_wpm = 0;
 	double accuracy = 0;
 
-	cout << "Typing speed calculator\n";
+	/* added for adjusting position in output screen */
+	int xPos = 0;
 
 	#ifdef RANDOM_INPUT
 		randtext(input, RAND_TEXT_SIZE);
 	#else
-		readtext(INPUT_FILE, input);
+		/* get the file name form the user */
+		if(argc < 2)
+		{
+			printf("usage: %s [filename]\n", argv[0]);
+			return 0;
+		}
+		else
+		{
+			// readtext(INPUT_FILE, input);	
+			readtext(argv[1], input);
+		}
+		
 	#endif
-
+	cout << "Typing speed calculator\n";
 	cout << "\n";
 	print(input);
 	cout << "\n\n";
@@ -134,13 +151,32 @@ int main(int argc, char const *argv[])
 		cout << ch;
 		if(ch != input[index])
 		{
-			cout << "\b";
+			/* on receiving a invalid new line go up
+				one line and go right xPos */
+			if(ch == '\n')
+			{
+				/* go up one line */
+				cout << "\033[1A";
+				/* go right xPos */
+				cout << "\033[" << xPos << "C";
+			}
+			else
+			{
+				cout << "\b";
+			}
 			errors++;
 		}
 		else
 		{
 			text.push_back(ch);
-			index++;	
+			index++;
+			xPos++;
+
+			/* reset the x position on every valid newline */
+			if(ch == '\n')	
+			{
+				xPos = 0;
+			}
 		}
 
 	}
@@ -148,7 +184,7 @@ int main(int argc, char const *argv[])
 	auto stop = high_resolution_clock::now();
 	auto time = duration_cast<milliseconds>(stop - start);
 
-	words = (text.size() / CHARS_PER_WORD);
+	words = ((double)text.size() / (double)CHARS_PER_WORD);
 	speed_wpm = (words / (time.count() / 1000)) * 60;
 	accuracy = ((double)(text.size() - errors) / text.size()) * 100;
 	cout << "\nwords typed: "  << words << " time: " << (time.count() / 1000) << " sec" << endl;
