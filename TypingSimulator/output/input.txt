@@ -1,0 +1,8 @@
+Every user has a unique login name and an associated numeric user identifier
+(UID). Users can belong to one or more groups. Each group also has a unique
+name and a group identifier (GID).
+The primary purpose of user and group IDs is to determine ownership of various
+system resources and to control the permissions granted to processes accessing
+those resources. For example, each file belongs to a particular user and group,
+and each process has a number of user and group IDs that determine who owns the
+process and what permissions it has when accessing a file (see Chapter 9 for details).
