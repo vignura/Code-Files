@@ -1,0 +1,4 @@
+Special names are given to the two changes that can be made to a stack. When an element is inserted in a stack,
+the concept is called as push, and when, an element is removed from the stack, the concept is called as pop.
+Trying to pop out an empty stack is called as underflow and trying to push an element in a full stack is called
+as overflow. Generally, we treat them as exceptions. As an example, consider the snapshots of the stack.

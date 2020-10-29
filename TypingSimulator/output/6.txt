@@ -1,0 +1,7 @@
+Consider a working day in the office. Let us assume a developer is working on a long-term project. The manager
+then gives the developer a new task, which is more important. The developer places the long-term project aside
+and begins work on the new task. The phone then rings, this is the highest priority, as it must be answered
+immediately. The developer pushes the present task into the pending tray and answers the phone. When the call
+is complete, the task abandoned to answer the phone is retrived from the pending tray and work progresses. If
+another call comes in, it may have to be handled in the same manner, but eventually the new task will be
+finished, and the developer can draw the long-term project from the pending tray and continue with that.

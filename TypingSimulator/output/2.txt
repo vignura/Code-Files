@@ -1,0 +1,8 @@
+On a stand-alone system, all the password information resides in the file /etc/passwd.
+However, if we are using a system such as Network Information System (NIS) or Lightweight
+Directory Access Protocol (LDAP) to distribute passwords in a network environment, part
+or all of this information resides on a remote system. As long as programs accessing
+password information employ the functions described later in this chapter (getpwnam(),
+getpwuid(), and so on), the use of NIS or LDAP is transparent to applications. Similar
+comments apply regarding the shadow password and group files discussed in the following
+sections.

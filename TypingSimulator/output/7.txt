@@ -1,0 +1,12 @@
+First, let's consider how we implemented a simple array based stack. We took one index variable top which points
+to the index of the most recently inserted element in the stack. To insert (or push) an element, we increment
+top index and then place the new element at that index. We represent empty queue with top value equal to -1.
+The issue still need to be resolved is that what we do when all the slots in fixed size array stack are
+occupied? First try: What if we increment the size of the array by 1 every time the stack is full? Push():
+increase size of S[] by 1 Pop(): decrease size of S[] by 1 Problems with this approach? This way of incrementing
+the array size is too expensive. Let us see the reason for this. For example, at n=1, to push an element create
+a new array of size 2 and copy all the old array elements to new array and at the end add the new element. At n
+= 2, to push an element create a new array of size 3 and copy all the old array elements to new array and at the
+end add the new element. Similarly, at n = n-1, if we want to push an element create a new array of size n and
+copy all the old array elements to new array and at the end the new element. After n push operations the total
+time T(n) (number of copy operations) is proportional to 1 + 2 + ... + n ~ O(n^2).

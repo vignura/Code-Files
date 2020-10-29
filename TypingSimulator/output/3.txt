@@ -1,0 +1,4 @@
+Get ready to bake some loosely coupled OO designs. There is more to making objects than
+just using the new operator. You'll learn that instantiation is an activity that shouldn't
+always be done in public and can often lead to coupling problems. And you don't want that,
+do you? Find out how Factory Patterns can help save you from embarrasing dependencies.
