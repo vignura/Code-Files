@@ -13,5 +13,7 @@ int read_error_db(error_db* edb);
 int write_error_db(error_db* edb);
 void update_errors(error_db* edb, char error);
 void display_errors_log();
+void swap_char(char *a, char *b);
+void swap_long(unsigned long *a, unsigned long *b);
 
 #endif /* _TYPING_SIMULATOR_ERRORLOG_H */
