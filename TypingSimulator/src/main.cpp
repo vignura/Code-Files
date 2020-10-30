@@ -27,6 +27,7 @@ void typing_speed_test(vector<char>& input, vector<char>& text)
 	/* added for adjusting position in output screen */
 	int xPos = 0;
 
+	read_error_db(&g_srt.edb);
 	cout << "Typing speed test\n";
 	cout << "\n";
 	print(input);
@@ -34,6 +35,7 @@ void typing_speed_test(vector<char>& input, vector<char>& text)
 
 	text.clear();
 	enableRawMode();
+
 	auto start = high_resolution_clock::now();
 		
 	while(text.size() < input.size())
@@ -53,6 +55,7 @@ void typing_speed_test(vector<char>& input, vector<char>& text)
 			}
 			else
 			{
+				update_errors(&g_srt.edb, input[index]);
 				cout << "\b";
 			}
 			errors++;
@@ -71,7 +74,8 @@ void typing_speed_test(vector<char>& input, vector<char>& text)
 		}
 
 	}
-	
+
+	write_error_db(&g_srt.edb);
 	auto stop = high_resolution_clock::now();
 	auto time = duration_cast<milliseconds>(stop - start);
 
@@ -130,6 +134,13 @@ int process_cmdline_args(int argc, const char *argv[], vector<char>& input)
 				iret = TYPE_SIM_FAILURE;
 				printf("invalid filename\n");
 			}
+		break;
+
+		case 'd':
+			/* display error log and return failure as
+			   we want the program to exit */
+			display_errors_log();
+			iret = TYPE_SIM_FAILURE;
 		break;
 
 		default:

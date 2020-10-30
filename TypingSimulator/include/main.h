@@ -21,6 +21,7 @@ using namespace std::chrono;
 /* project headers */
 #include "../include/terminal.h"
 #include "../include/fileio.h"
+#include "../include/errorlog.h"
 
 #define TYPE_SIM_SUCCESS		0
 #define TYPE_SIM_FAILURE		-1
@@ -37,6 +38,7 @@ typedef struct {
 
 	vector<char> text;
 	vector<char> input;
+	error_db edb;
 }global_struct;
 
 extern global_struct g_srt;
