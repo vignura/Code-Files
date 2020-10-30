@@ -3,7 +3,7 @@
 void readtext(const char *FileName, vector<char> &text)
 {
 	char ch = 0;
-	int iRetVal = 0;
+	int iret = 0;
 	FILE *fptr = NULL;
 
 	if(FileName == NULL)
@@ -16,13 +16,20 @@ void readtext(const char *FileName, vector<char> &text)
 	{
 		while(1)
 		{
-			iRetVal = fread(&ch, sizeof(char), 1, fptr);
 			if(feof(fptr))
 			{
 				break;
 			}
 
-			text.push_back(ch);
+			iret = fread(&ch, sizeof(char), 1, fptr);
+			if(iret == 1)
+			{
+				text.push_back(ch);
+			}
+			else
+			{
+				break;
+			}
 		}
 		// printf("%d characters read from %s Success\n", text.size(), FileName);
 
