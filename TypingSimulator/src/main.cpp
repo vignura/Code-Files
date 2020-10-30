@@ -5,46 +5,42 @@ global_struct g_srt;
 
 int main(int argc, char const *argv[])
 {
+	/* process command line inputs */
+	if(process_cmdline_args(argc, argv, g_srt.input) == TYPE_SIM_SUCCESS)
+	{
+		/* run the test */
+		typing_speed_test(g_srt.input, g_srt.text);	
+	}
+
+	return 0;
+}
+
+
+void typing_speed_test(vector<char>& input, vector<char>& text)
+{
 	char ch = 0;
 	int index = 0;
 	int errors = 0;
 	double words  = 0;
 	double speed_wpm = 0;
 	double accuracy = 0;
-
 	/* added for adjusting position in output screen */
 	int xPos = 0;
 
-	#ifdef RANDOM_INPUT
-		randtext(g_srt.input, RAND_TEXT_SIZE);
-	#else
-		/* get the file name form the user */
-		if(argc < 2)
-		{
-			printf("usage: %s [filename]\n", argv[0]);
-			return 0;
-		}
-		else
-		{
-			// readtext(INPUT_FILE, g_srt.input);	
-			readtext(argv[1], g_srt.input);
-		}
-		
-	#endif
-	cout << "Typing Simulator\n";
+	cout << "Typing speed test\n";
 	cout << "\n";
-	print(g_srt.input);
+	print(input);
 	cout << "\n\n";
 
-	g_srt.text.clear();
+	text.clear();
 	enableRawMode();
 	auto start = high_resolution_clock::now();
 		
-	while(g_srt.text.size() < g_srt.input.size())
+	while(text.size() < input.size())
 	{
 		ch = getchar();
 		cout << ch;
-		if(ch != g_srt.input[index])
+		if(ch != input[index])
 		{
 			/* on receiving a invalid new line go up
 				one line and go right xPos */
@@ -63,7 +59,7 @@ int main(int argc, char const *argv[])
 		}
 		else
 		{
-			g_srt.text.push_back(ch);
+			text.push_back(ch);
 			index++;
 			xPos++;
 
@@ -79,11 +75,67 @@ int main(int argc, char const *argv[])
 	auto stop = high_resolution_clock::now();
 	auto time = duration_cast<milliseconds>(stop - start);
 
-	words = ((double)g_srt.text.size() / (double)CHARS_PER_WORD);
+	words = ((double)text.size() / (double)CHARS_PER_WORD);
 	speed_wpm = (words / (time.count() / 1000)) * 60;
-	accuracy = ((double)(g_srt.text.size() - errors) / g_srt.text.size()) * 100;
+	accuracy = ((double)(text.size() - errors) / text.size()) * 100;
 	cout << "\nwords typed: "  << words << " time: " << (time.count() / 1000) << " sec" << endl;
 	cout << "Speed: " << speed_wpm << " wpm " << "Accuracy: " << accuracy << " %" << endl;
+}
 
-	return 0;
+int process_cmdline_args(int argc, const char *argv[], vector<char>& input)
+{
+	int iret = 0;
+	int words = 0;
+	char arg = 0;
+	char filename[256] = {0};
+
+	/* get the file name form the user */
+	if(argc < 3)
+	{
+		printf("usage: %s [option] [parm]\n", argv[0]);
+		return TYPE_SIM_FAILURE;
+	}
+	
+	/* get the argument */
+	sscanf(argv[1], "-%c", &arg);
+	// printf("argument: %c\n", arg);
+
+	switch(arg)
+	{
+		case 'r':
+			/* read the word count from argv */
+			iret = sscanf(argv[2], "%d", &words);
+			if(iret == 1)
+			{
+				randtext(input, (CHARS_PER_WORD * words));
+				iret = TYPE_SIM_SUCCESS;
+			}
+			else
+			{
+				iret = TYPE_SIM_FAILURE;
+				printf("invalid word count\n");
+			}
+		break;
+
+		case 'f':
+			/* read the file name form the argv */
+			iret = sscanf(argv[2], "%s", filename);
+			if(iret == 1)
+			{
+				readtext(filename, input);
+				iret = TYPE_SIM_SUCCESS;
+			}
+			else
+			{
+				iret = TYPE_SIM_FAILURE;
+				printf("invalid filename\n");
+			}
+		break;
+
+		default:
+			printf("invalid option\n");
+			iret = TYPE_SIM_FAILURE;
+	}
+
+	return iret;
 }
