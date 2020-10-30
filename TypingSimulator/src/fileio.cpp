@@ -65,7 +65,10 @@ void randtext(vector<char>& text, int size)
 		}
 		else
 		{
-			ch = (rand() % CHAR_SET_SIZE) + 'a';
+			/* uniformity factor is added as lower bits of rand output
+			 are not distributed uniformaly, so dividing by UNIFORMITY_FACTOR 
+			 */
+			ch = ((rand() / UNIFORMITY_FACTOR) % CHAR_SET_SIZE) + 'a';
 			// ch = 'z' - (rand() % CHAR_SET_SIZE);
 		}
 		text.push_back(ch);
