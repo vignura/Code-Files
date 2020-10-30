@@ -6,7 +6,7 @@ OUTDIR = ./output
 
 #compiler macros
 CC = g++
-CFLAGS = -I $(IDIR) -Wall
+CFLAGS = -I $(IDIR) -Wall -std=c++11
 HFILES = $(IDIR)/main.h $(IDIR)/terminal.h $(IDIR)/fileio.h
 OFILES = $(ODIR)/main.o $(ODIR)/terminal.o $(ODIR)/fileio.o
 
