@@ -22,6 +22,9 @@ using namespace std::chrono;
 #include "../include/terminal.h"
 #include "../include/fileio.h"
 
+#define TYPE_SIM_SUCCESS		0
+#define TYPE_SIM_FAILURE		-1
+
 #define CHARS_PER_WORD		5
 // #define RANDOM_INPUT
 #define RAND_TEXT_SIZE		(CHARS_PER_WORD * 10)
@@ -37,5 +40,8 @@ typedef struct {
 }global_struct;
 
 extern global_struct g_srt;
+
+void typing_speed_test(vector<char>& input, vector<char>& text);
+int process_cmdline_args(int argc, const char *argv[], vector<char>& input);
 
 #endif /* _TYPING_SIMULATOR_MAIN_H_ */
