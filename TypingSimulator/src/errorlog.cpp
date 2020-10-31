@@ -59,6 +59,7 @@ void update_errors(error_db* edb, char error)
 	}
 }
 
+#if 0
 void display_errors_log()
 {
 	int index = 0;
@@ -100,6 +101,59 @@ void display_errors_log()
 	else
 	{
 		printf("unable to display error log\n");
+	}
+}
+#else
+void display_errors_log()
+{
+	int index = 0;
+	error_db edb = {0};
+	error_stat est = {0};
+
+	printf("ERROR STATS\n");
+
+	/* read error db */
+	if(read_error_db(&edb) == TYPE_SIM_SUCCESS)
+	{
+		compute_error_stats(&edb, &est);
+
+		for(index = 0; index < ERROR_CHAR_SET_SIZE; index++)
+		{
+			printf("%c: %ld (%.02f)\n", est.charset[index], est.edb.error_count[index],
+				  (((double)est.edb.error_count[index] / (double)est.edb.total_errors) * 100));
+		}
+
+		printf("total errors: %lld\n", est.edb.total_errors);
+	}
+	else
+	{
+		printf("unable to display error log\n");
+	}
+}
+#endif
+
+void compute_error_stats(error_db* edb, error_stat* est)
+{
+	/* copy the error data base */
+	memcpy(&est->edb, edb, sizeof(error_db));
+
+	/* intialse the charset with alphabets */
+	for(int i = 0; i < ERROR_CHAR_SET_SIZE; i++)
+	{
+		est->charset[i] = ('a' + i);
+	}
+
+	/* sort descending */
+	for(int i = 0; i < ERROR_CHAR_SET_SIZE; i++)
+	{	
+		for(int j = (i +1); j < ERROR_CHAR_SET_SIZE; j++)
+		{
+			if(est->edb.error_count[i] < est->edb.error_count[j])
+			{
+				swap_char(&est->charset[i], &est->charset[j]);
+				swap_long(&est->edb.error_count[i], &est->edb.error_count[j]);
+			}
+		}
 	}
 }
 
