@@ -90,6 +90,7 @@ int process_cmdline_args(int argc, const char *argv[], vector<char>& input)
 {
 	int iret = 0;
 	int words = 0;
+	int chars = 0;
 	char arg = 0;
 	char filename[256] = {0};
 
@@ -143,6 +144,28 @@ int process_cmdline_args(int argc, const char *argv[], vector<char>& input)
 			iret = TYPE_SIM_FAILURE;
 		break;
 
+		case 'p':
+			/* generate random words with problem characters */
+			iret = sscanf(argv[2], "%d", &chars);
+			if(iret == 1)
+			{
+				if(problemtext(input, chars, (12 * CHARS_PER_WORD)) == TYPE_SIM_SUCCESS)
+				{
+					iret = TYPE_SIM_SUCCESS;	
+				}
+				else
+				{
+					iret = TYPE_SIM_FAILURE;
+					printf("unable to generate problem text\n");	
+				}
+			}
+			else
+			{
+				iret = TYPE_SIM_FAILURE;
+				printf("invalid character count\n");
+			}
+		break;
+		
 		default:
 			printf("invalid option\n");
 			iret = TYPE_SIM_FAILURE;
