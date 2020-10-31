@@ -7,5 +7,6 @@
 void readtext(const char *FileName, vector<char> &text);
 void print(vector<char> text);
 void randtext(vector<char>& text, int size);
+int problemtext(vector<char>& text, int char_count, int textsize);
 
 #endif /* _TYPING_SIMULATOR_FILEIO_H_ */
