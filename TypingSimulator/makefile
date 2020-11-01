@@ -2,7 +2,7 @@
 IDIR = ./include
 ODIR = ./obj
 SDIR = ./src
-OUTDIR = ./output
+OUTDIR = output
 
 #compiler macros
 CC = g++
@@ -26,6 +26,6 @@ $(ODIR)/errorlog.o: $(SDIR)/errorlog.cpp $(HFILES)
 	$(CC) -c $(SDIR)/errorlog.cpp $(CFLAGS) -o $@
 
 clean:
-	-rm -f $(OFILES) $(OUTDIR)/*
+	-rm -f $(OFILES) $(OUTDIR)/typing_simulator
 
-rebuild: clean $(OUTDIR)/typing_simultor
+rebuild: clean $(OUTDIR)/typing_simulator
