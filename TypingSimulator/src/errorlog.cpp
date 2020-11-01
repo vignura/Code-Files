@@ -19,6 +19,8 @@ int read_error_db(error_db* edb)
 		return TYPE_SIM_FAILURE;
 	}
 
+	fclose(fp);
+
 	return TYPE_SIM_SUCCESS;
 }
 
@@ -40,6 +42,8 @@ int write_error_db(error_db* edb)
 		printf("unable to write %s\n", ERROR_DB_FILE_NAME);
 		return TYPE_SIM_FAILURE;
 	}
+
+	fclose(fp);
 
 	return TYPE_SIM_SUCCESS;
 }

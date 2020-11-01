@@ -122,11 +122,183 @@ int problemtext(vector<char>& text, int char_count, int textsize)
 	return ret;
 }
 
-void print_typing_stat(typing_stat* tst)
+void print_test_stat(test_stat* tst)
 {
 	if(tst != NULL)
 	{
-		printf("\nwords typed: %.01f time: %.02f sec\n", tst->words, tst->time);
+		printf("words typed: %.01f time: %.02f sec\n", tst->words, tst->time);
 		printf("speed: %.02f wpm accuracy: %.02f %%\n", tst->speed, tst->accuracy);
 	}
+}
+
+int read_typing_stat(vector<typing_stat>& vtstat, unsigned int stat_count)
+{
+	int ret = 0;
+	FILE *fp = NULL;
+	long filesize = 0;
+	typing_stat tstat = {0};
+	typing_stat_header tstat_header = {0};
+
+	fp = fopen(TYPING_STAT_FILE, "rb");
+	if(fp == NULL)
+	{
+		printf("unable to open %s\n", TYPING_STAT_FILE);
+		return TYPE_SIM_FAILURE;
+	}
+
+	/* get the file size */
+	filesize = get_filesize(fp->_fileno);
+
+	/* read the file header */
+	if(fread(&tstat_header, sizeof(tstat_header), 1, fp) != 1)
+	{
+		printf("unable to read %s\n", ERROR_DB_FILE_NAME);
+		return TYPE_SIM_FAILURE;
+	}
+	else
+	{
+		printf("stat count: %ld\n", tstat_header.stat_count);
+	}
+	
+	/* read the stat records from the file in reverse order */
+	for(unsigned int i = 0; ((i < tstat_header.stat_count) && (i < stat_count)); i++)
+	{
+		if(fseek(fp, (filesize - ((i +1) * sizeof(typing_stat))), SEEK_SET) != 0)
+		{
+			perror("unable to seek form the end of the file");
+			return TYPE_SIM_FAILURE;
+		}
+
+		/* read the file header */
+		ret = fread(&tstat, sizeof(typing_stat), 1, fp);
+		if(ret != 1)
+		{
+			printf("ret: %d\n", ret);
+			perror("unable to read stats");
+			return TYPE_SIM_FAILURE;
+		}		
+
+		vtstat.push_back(tstat);
+	}
+
+	fclose(fp);
+
+	return TYPE_SIM_SUCCESS;
+}
+
+int append_typing_stat(typing_stat* tstat)
+{
+	FILE *fp = NULL;
+	typing_stat_header tstat_header = {0};
+
+	fp = fopen(TYPING_STAT_FILE, "rb");
+	if(fp == NULL)
+	{
+		printf("unable to open %s\n", TYPING_STAT_FILE);
+		printf("creating %s\n", TYPING_STAT_FILE);
+
+		/* create a new file as it does not exist */
+		fp = fopen(TYPING_STAT_FILE, "wb");
+		if(fp == NULL)
+		{
+			printf("unable to create %s\n", TYPING_STAT_FILE);
+			return TYPE_SIM_FAILURE;
+		}	
+
+		/* write the empty header */
+		if(fwrite(&tstat_header, sizeof(typing_stat_header), 1, fp) != 1)
+		{
+			printf("unable to write header to %s\n", ERROR_DB_FILE_NAME);
+			return TYPE_SIM_FAILURE;
+		}
+
+		/* close the file */
+		fclose(fp);
+	}
+	else{
+
+		/* read the file header */
+		if(fread(&tstat_header, sizeof(typing_stat_header), 1, fp) != 1)
+		{
+			printf("unable to read %s\n", ERROR_DB_FILE_NAME);
+			return TYPE_SIM_FAILURE;
+		}
+		
+		/* close the file */
+		fclose(fp);
+	}
+
+	/* append the stat record to the end of the file */
+	fp = fopen(TYPING_STAT_FILE, "ab");
+	if(fp == NULL)
+	{
+		printf("unable to open %s\n", TYPING_STAT_FILE);
+		return TYPE_SIM_FAILURE;
+	}
+
+	if(fwrite(tstat, sizeof(typing_stat), 1, fp) != 1)
+	{
+		printf("unable to append stat to %s\n", ERROR_DB_FILE_NAME);
+		return TYPE_SIM_FAILURE;
+	}
+
+	fclose(fp);
+
+	/* update the header */
+	fp = fopen(TYPING_STAT_FILE, "r+b");
+	if(fp == NULL)
+	{
+		printf("unable to open %s\n", TYPING_STAT_FILE);
+		return TYPE_SIM_FAILURE;
+	}
+
+	/* update the header */
+	tstat_header.stat_count++;
+	if(fwrite(&tstat_header, sizeof(tstat_header), 1, fp) != 1)
+	{
+		printf("unable to update header to %s\n", ERROR_DB_FILE_NAME);
+		return TYPE_SIM_FAILURE;
+	}
+
+	fclose(fp);
+
+	return TYPE_SIM_SUCCESS;
+}
+
+void display_typing_stat(int stat_count)
+{
+	vector<typing_stat> vtstat;
+	char *date_time = NULL;
+
+	if(read_typing_stat(vtstat, stat_count) == TYPE_SIM_SUCCESS)
+	{
+		printf("TYPING STATS:\n");
+
+		for(unsigned int i = 0; i < vtstat.size(); i++)
+		{
+			date_time = ctime(&vtstat[i].test_time);
+			printf("%s", date_time);
+			print_test_stat(&vtstat[i].tstat);
+			printf("\n");
+		}
+	}
+	else
+	{
+		printf("unable to display typing stats\n");
+	}
+}
+
+long get_filesize(int fd)
+{
+    struct stat stat_buf = {0};
+    int ret =  0;
+    
+    ret = fstat(fd, &stat_buf);
+    if(ret != 0)
+    {
+    	perror("unable to read file size");
+    	return TYPE_SIM_FAILURE;
+    }
+
+    return stat_buf.st_size;
 }

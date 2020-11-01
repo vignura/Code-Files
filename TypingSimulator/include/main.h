@@ -8,11 +8,14 @@
 #include <cstring>
 #include <cstdio>
 #include <vector>
+#include <ctime>
 
 /* linux headers */
 #include <unistd.h>
 #include <stdlib.h>
 #include <termios.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 
 /* name spaces */
 using namespace std;
@@ -43,7 +46,7 @@ typedef struct {
 
 extern global_struct g_srt;
 
-void typing_speed_test(vector<char>& input, vector<char>& text, typing_stat *tst);
+void typing_speed_test(vector<char>& input, vector<char>& text, test_stat *tst);
 int process_cmdline_args(int argc, const char *argv[], vector<char>& input);
 
 #endif /* _TYPING_SIMULATOR_MAIN_H_ */

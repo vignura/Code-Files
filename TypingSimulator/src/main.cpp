@@ -5,20 +5,25 @@ global_struct g_srt;
 
 int main(int argc, char const *argv[])
 {
-	typing_stat tst = {0};
+	typing_stat tystat = {0};
 
 	/* process command line inputs */
 	if(process_cmdline_args(argc, argv, g_srt.input) == TYPE_SIM_SUCCESS)
 	{
 		/* run the test */
-		typing_speed_test(g_srt.input, g_srt.text, &tst);
-		print_typing_stat(&tst);	
+		typing_speed_test(g_srt.input, g_srt.text, &tystat.tstat);
+		printf("\n");
+		print_test_stat(&tystat.tstat);
+
+		/* update the typing stat database */	
+		tystat.test_time = time(NULL);
+		append_typing_stat(&tystat);
 	}
 
 	return 0;
 }
 
-void typing_speed_test(vector<char>& input, vector<char>& text, typing_stat *tst)
+void typing_speed_test(vector<char>& input, vector<char>& text, test_stat *tst)
 {
 	char ch = 0;
 	int index = 0;
@@ -67,6 +72,7 @@ int process_cmdline_args(int argc, const char *argv[], vector<char>& input)
 	int iret = 0;
 	int words = 0;
 	int chars = 0;
+	int stat_count = 0;
 	char arg = 0;
 	char filename[256] = {0};
 	char option[128] = {0};
@@ -93,7 +99,7 @@ int process_cmdline_args(int argc, const char *argv[], vector<char>& input)
 					    "Options:\n"
 					    "\t-r\tgenerate n number of random words\n"
 					    "\t-f\tuse file as input for typing test\n"
-					    "\t-d\tdisplay error stats\n"
+					    "\t-d\tdisplay stats [E - error stats; T - last n typing stats]\n"
 					    "\t-p\tgenerate n random words using the top n number of problem charcters\n");
 			}
 			else
@@ -147,9 +153,51 @@ int process_cmdline_args(int argc, const char *argv[], vector<char>& input)
 		break;
 
 		case 'd':
-			/* display error log and return failure as
-			   we want the program to exit */
-			display_errors_log();
+			if(argc < 3)
+			{
+				printf("usage: %s [option] [parm]\n", argv[0]);
+			}
+			else{
+				/* read the stat type argv */
+				if(sscanf(argv[2], "%c", &arg) == 1)
+				{
+					switch(arg)
+					{
+						case 'E':
+							/* display error log and return failure as
+				   			we want the program to exit */
+							display_errors_log();
+						break;
+
+						case 'T':
+							if(argc < 4)
+							{
+								printf("enter stat count\n");
+							}
+							else
+							{	
+								if(sscanf(argv[3], "%d", &stat_count) == 1)
+								{				
+									display_typing_stat(stat_count);	
+								}
+								else
+								{
+									printf("invalid stat count\n");		
+								}
+							}
+							
+						break;
+
+						default:
+						;
+					}
+					iret = TYPE_SIM_SUCCESS;
+				}
+				else
+				{
+					printf("invalid stat option\n");
+				}
+			}
 			iret = TYPE_SIM_FAILURE;
 		break;
 
