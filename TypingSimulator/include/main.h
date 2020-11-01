@@ -43,7 +43,7 @@ typedef struct {
 
 extern global_struct g_srt;
 
-void typing_speed_test(vector<char>& input, vector<char>& text);
+void typing_speed_test(vector<char>& input, vector<char>& text, typing_stat *tst);
 int process_cmdline_args(int argc, const char *argv[], vector<char>& input);
 
 #endif /* _TYPING_SIMULATOR_MAIN_H_ */

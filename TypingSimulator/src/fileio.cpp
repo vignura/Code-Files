@@ -121,3 +121,12 @@ int problemtext(vector<char>& text, int char_count, int textsize)
 
 	return ret;
 }
+
+void print_typing_stat(typing_stat* tst)
+{
+	if(tst != NULL)
+	{
+		printf("\nwords typed: %.01f time: %.02f sec\n", tst->words, tst->time);
+		printf("speed: %.02f wpm accuracy: %.02f %%\n", tst->speed, tst->accuracy);
+	}
+}

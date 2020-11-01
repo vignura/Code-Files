@@ -5,29 +5,27 @@ global_struct g_srt;
 
 int main(int argc, char const *argv[])
 {
+	typing_stat tst = {0};
+
 	/* process command line inputs */
 	if(process_cmdline_args(argc, argv, g_srt.input) == TYPE_SIM_SUCCESS)
 	{
 		/* run the test */
-		typing_speed_test(g_srt.input, g_srt.text);	
+		typing_speed_test(g_srt.input, g_srt.text, &tst);
+		print_typing_stat(&tst);	
 	}
 
 	return 0;
 }
 
-
-void typing_speed_test(vector<char>& input, vector<char>& text)
+void typing_speed_test(vector<char>& input, vector<char>& text, typing_stat *tst)
 {
 	char ch = 0;
 	int index = 0;
 	int errors = 0;
-	double words  = 0;
-	double speed_wpm = 0;
-	double accuracy = 0;
 	
 	read_error_db(&g_srt.edb);
-	cout << "Typing speed test\n";
-	cout << "\n";
+	cout << "Typing speed test\n\n";
 	print(input);
 	cout << "\n\n";
 
@@ -58,11 +56,10 @@ void typing_speed_test(vector<char>& input, vector<char>& text)
 	auto stop = high_resolution_clock::now();
 	auto time = duration_cast<milliseconds>(stop - start);
 
-	words = ((double)text.size() / (double)CHARS_PER_WORD);
-	speed_wpm = (words / (time.count() / 1000)) * 60;
-	accuracy = ((double)(text.size() - errors) / text.size()) * 100;
-	cout << "\nwords typed: "  << words << " time: " << (time.count() / 1000) << " sec" << endl;
-	cout << "Speed: " << speed_wpm << " wpm " << "Accuracy: " << accuracy << " %" << endl;
+	tst->time =  (time.count() / 1000.00);
+	tst->words = ((double)text.size() / (double)CHARS_PER_WORD);
+	tst->speed = (tst->words / tst->time) * 60;
+	tst->accuracy = ((double)(text.size() - errors) / text.size()) * 100;
 }
 
 int process_cmdline_args(int argc, const char *argv[], vector<char>& input)
