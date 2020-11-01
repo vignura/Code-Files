@@ -1,7 +1,7 @@
 A stack is a simple data structure used for storing data (similar to Linked Lists). In stack, the order in which
 the data arrives is important. The pile of plates of a cafeteria is good example of stack. The plates are added
 to the stack as they are cleaned. They are placed on the top.When a plate is required it is taken from the top
-of the stack. The first plate plced on the stack is the last one be used.
+of the stack. The first plate placed on the stack is the last one be used.
 Definition:
 A stack is an ordered list in which insertion and deletion are done at one end, where the end is called as top.
 The last element inserted is the first one to be deleted. Hence, it is called Last in First out(LIFO) or First
