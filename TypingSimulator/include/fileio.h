@@ -34,5 +34,6 @@ int read_typing_stat(vector<typing_stat>& vtstat, unsigned int stat_count);
 int append_typing_stat(typing_stat* tstat);
 void display_typing_stat(int stat_count);
 long get_filesize(int fd);
+int mistyped_words(vector<char>& text, unsigned int word_count);
 
 #endif /* _TYPING_SIMULATOR_FILEIO_H_ */

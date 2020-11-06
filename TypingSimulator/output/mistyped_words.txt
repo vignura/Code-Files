@@ -4,7 +4,6 @@ interrupt
 normal
 most
 possible
-to
 predict
 exactly
 signal
@@ -20,9 +19,3 @@ has
 to
 do
 with
-must
-potential.
-puppy
-different
-within
-you

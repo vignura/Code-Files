@@ -210,11 +210,14 @@ int read_mistyped_words(vector<string>& words)
 
 	while(fscanf(fp, "%s", str) != EOF)
 	{
-		word.copy(str, strlen(str));
+		// printf("read: %s\n", str);	
+		word = str;
 		words.push_back(word);
 	}
 
 	fclose(fp);
+
+	// print_words(words);
 
 	return TYPE_SIM_SUCCESS;
 }
@@ -265,13 +268,16 @@ int write_mistyped_words(vector<string>& words)
 
 int find_string(vector<string> words, string word)
 {
+	int ret = 0;
 	for(unsigned int i = 0; i < words.size(); i++)
 	{
-		if(words[i].compare(word) == 0)
+		ret = words[i].compare(word);
+		if(ret == 0)
 		{
 			/* return index */
 			return i;
 		}
+		// printf("comparing %s and %s: %d\n", words[i].c_str(), word.c_str(), ret);
 	}
 
 	return TYPE_SIM_FAILURE;

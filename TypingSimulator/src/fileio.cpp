@@ -302,3 +302,47 @@ long get_filesize(int fd)
 
     return stat_buf.st_size;
 }
+
+
+int mistyped_words(vector<char>& text, unsigned int word_count)
+{
+	int index = 0;
+	unsigned int i = 0;
+	unsigned int j = 0;
+	vector<string> mistyped_words;
+
+	/* read mistyped words from file */
+	if(read_mistyped_words(mistyped_words) != TYPE_SIM_SUCCESS)
+	{
+		printf("unable to read mistyped words\n");
+		return TYPE_SIM_FAILURE;
+	}
+
+	// print_words(mistyped_words);
+
+	/* get some random words form mistyped words */
+	srand(time(NULL));
+
+	for(i = 1; i <= word_count; i++)
+	{
+		index = (rand() / UNIFORMITY_FACTOR) % mistyped_words.size();
+		
+		for(j = 0; j < mistyped_words[index].size(); j++)
+		{
+			text.push_back(mistyped_words[index][j]);	
+		}
+
+		if(i % WORD_PER_LINE == 0)
+		{
+			text.push_back('\n');
+		}
+		else
+		{
+			text.push_back(' ');		
+		}
+	}
+	/* remove the trailing space */
+	text.pop_back();
+
+	return TYPE_SIM_SUCCESS;
+}

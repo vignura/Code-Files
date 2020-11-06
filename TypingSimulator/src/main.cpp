@@ -112,7 +112,8 @@ int process_cmdline_args(int argc, const char *argv[], vector<char>& input)
 					    "\t-r\tgenerate n number of random words\n"
 					    "\t-f\tuse file as input for typing test\n"
 					    "\t-d\tdisplay stats [E - error stats; T - last n typing stats]\n"
-					    "\t-p\tgenerate n random words using the top n number of problem charcters\n");
+					    "\t-p\tgenerate n random words using the top n number of problem charcters\n"
+					    "\t-m\tuse n random mistyped words\n");
 			}
 			else
 			{
@@ -245,6 +246,33 @@ int process_cmdline_args(int argc, const char *argv[], vector<char>& input)
 				{
 					iret = TYPE_SIM_FAILURE;
 					printf("invalid character count\n");
+				}
+			}
+		break;
+
+		case 'm':
+			if(argc < 3)
+			{
+				printf("usage: %s [option] [parm]\n", argv[0]);
+				iret = TYPE_SIM_FAILURE;
+			}
+			else{
+				/* read the word count from argv */
+				if(sscanf(argv[2], "%d", &words) == 1)
+				{
+					if(mistyped_words(input, words) == TYPE_SIM_SUCCESS)
+					{
+						iret = TYPE_SIM_SUCCESS;
+					}
+					else
+					{
+						iret = TYPE_SIM_FAILURE;
+					}
+				}
+				else
+				{
+					iret = TYPE_SIM_FAILURE;
+					printf("invalid word count\n");
 				}
 			}
 		break;
