@@ -63,51 +63,6 @@ void update_errors(error_db* edb, char error)
 	}
 }
 
-#if 0
-void display_errors_log()
-{
-	int index = 0;
-	error_db edb = {0};
-	char charset[ERROR_CHAR_SET_SIZE] = {0};
-
-	/* intialse the charset with alphabets */
-	for(index = 0; index < ERROR_CHAR_SET_SIZE; index++)
-	{
-		charset[index] = ('a' + index);
-	}
-
-	printf("ERROR STATS\n");
-
-	/* read error db */
-	if(read_error_db(&edb) == TYPE_SIM_SUCCESS)
-	{
-		/* sort descending */
-		for(int i = 0; i < ERROR_CHAR_SET_SIZE; i++)
-		{	
-			for(int j = (i +1); j < ERROR_CHAR_SET_SIZE; j++)
-			{
-				if(edb.error_count[i] < edb.error_count[j])
-				{
-					swap_char(&charset[i], &charset[j]);
-					swap_long(&edb.error_count[i], &edb.error_count[j]);
-				}
-			}
-		}
-
-		for(index = 0; index < ERROR_CHAR_SET_SIZE; index++)
-		{
-			printf("%c: %ld (%.02f)\n", charset[index], edb.error_count[index],
-				  (((double)edb.error_count[index] / (double)edb.total_errors) * 100));
-		}
-
-		printf("total errors: %lld\n", edb.total_errors);
-	}
-	else
-	{
-		printf("unable to display error log\n");
-	}
-}
-#else
 void display_errors_log()
 {
 	int index = 0;
@@ -134,7 +89,6 @@ void display_errors_log()
 		printf("unable to display error log\n");
 	}
 }
-#endif
 
 void compute_error_stats(error_db* edb, error_stat* est)
 {
@@ -174,3 +128,151 @@ void swap_long(unsigned long *a, unsigned long *b)
 	*a = *b;
 	*b = tmp;
 }
+
+void find_mistyped_words(vector<char>& input, vector<char>& text, vector<string>& mistyped_words)
+{
+	unsigned int i = 0;
+	unsigned int j = 0;
+	int ret = 0;
+
+	vector<string> input_words;
+	vector<string> text_words;
+	
+	/* tokenize the strings */
+	string_split(input, ' ', input_words);
+	string_split(text, ' ', text_words);
+	// printf("words in input\n");
+	// print_words(input_words);
+
+	for(i = 0, j = 0; (i < input_words.size()) && (j < text_words.size()); i++, j++)
+	{
+		ret = input_words[i].compare(text_words[j]); 
+		// printf("comparing %s and %s: %d\n", input_words[i].c_str(), text_words[j].c_str(), ret);
+		if(ret != 0)
+		{
+			// printf("input size: %ld text size: %ld\n", input_words[i].size(), text_words[j].size());
+			/* if the size of input word is greater than text word, then
+			 user has pressed space before completing the current word hence 
+			 skip next word */
+			if(input_words[i].size() > text_words[j].size())
+			{
+				j++;
+			}
+			mistyped_words.push_back(input_words[i]);
+		}
+	}
+}
+
+void string_split(vector<char>& str, char c, vector<string>& words)
+{
+	unsigned int index = 0;
+	string word;
+
+	for(index = 0; index < str.size(); index++)
+	{
+		if(str[index] == c)
+		{
+			words.push_back(word);
+			word.clear();
+		}
+		else
+		{
+			word.push_back(str[index]);
+		}
+	}
+
+	/* push back the last word */
+	words.push_back(word);
+}
+
+void print_words(vector<string>& words)
+{
+	unsigned int i = 0;
+
+	for(i = 0; i < words.size(); i++)
+	{
+		printf("%s\n", words[i].c_str());
+	}
+}
+
+int read_mistyped_words(vector<string>& words)
+{
+	FILE *fp = NULL;
+	char str[256] = {0};
+	string word;
+
+	fp = fopen(MISTYPED_WORDS_FILE_NAME, "r");
+	if(fp == NULL)
+	{
+		printf("unable to open %s\n", MISTYPED_WORDS_FILE_NAME);
+		return TYPE_SIM_FAILURE;
+	}
+
+	while(fscanf(fp, "%s", str) != EOF)
+	{
+		word.copy(str, strlen(str));
+		words.push_back(word);
+	}
+
+	fclose(fp);
+
+	return TYPE_SIM_SUCCESS;
+}
+
+int write_mistyped_words(vector<string>& words)
+{
+	FILE *fp = NULL;
+	unsigned int i = 0;
+	vector<string> mistyped_words;
+
+	if(read_mistyped_words(mistyped_words) != TYPE_SIM_SUCCESS)
+	{
+		printf("unable to open %s\n", MISTYPED_WORDS_FILE_NAME);
+		printf("creating %s\n", MISTYPED_WORDS_FILE_NAME);
+
+		/* create the file */
+		fp = fopen(MISTYPED_WORDS_FILE_NAME, "w");
+		if(fp == NULL)
+		{
+			printf("unable to create %s\n", MISTYPED_WORDS_FILE_NAME);
+			return TYPE_SIM_FAILURE;			
+		}
+	}
+	else
+	{
+		/* create the file */
+		fp = fopen(MISTYPED_WORDS_FILE_NAME, "a");
+		if(fp == NULL)
+		{
+			printf("unable to open %s\n", MISTYPED_WORDS_FILE_NAME);
+			return TYPE_SIM_FAILURE;			
+		}	
+	}
+
+	for(i = 0; i < words.size(); i++)
+	{
+		if(find_string(mistyped_words, words[i]) == TYPE_SIM_FAILURE)
+		{
+			fprintf(fp, "%s\n", words[i].c_str());
+		}
+	}
+
+	fclose(fp);
+
+	return TYPE_SIM_SUCCESS;
+}
+
+
+int find_string(vector<string> words, string word)
+{
+	for(unsigned int i = 0; i < words.size(); i++)
+	{
+		if(words[i].compare(word) == 0)
+		{
+			/* return index */
+			return i;
+		}
+	}
+
+	return TYPE_SIM_FAILURE;
+} 

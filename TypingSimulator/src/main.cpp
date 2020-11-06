@@ -6,18 +6,30 @@ global_struct g_srt;
 int main(int argc, char const *argv[])
 {
 	typing_stat tystat = {0};
+	vector<string> mistyped_words;
 
 	/* process command line inputs */
 	if(process_cmdline_args(argc, argv, g_srt.input) == TYPE_SIM_SUCCESS)
 	{
 		/* run the test */
 		typing_speed_test(g_srt.input, g_srt.text, &tystat.tstat);
-		printf("\n");
+		// printf("\n\n");
+		// print(g_srt.text);
+		printf("\n\n");
 		print_test_stat(&tystat.tstat);
 
 		/* update the typing stat database */	
 		tystat.test_time = time(NULL);
 		append_typing_stat(&tystat);
+
+		/* find mistyped words */
+		find_mistyped_words(g_srt.input, g_srt.text, mistyped_words);
+		if(mistyped_words.size() > 0)
+		{
+			write_mistyped_words(mistyped_words);
+			// printf("\nmistyped words:\n");
+			// print_words(mistyped_words);
+		}
 	}
 
 	return 0;
@@ -26,7 +38,7 @@ int main(int argc, char const *argv[])
 void typing_speed_test(vector<char>& input, vector<char>& text, test_stat *tst)
 {
 	char ch = 0;
-	int index = 0;
+	unsigned int index = 0;
 	int errors = 0;
 	
 	read_error_db(&g_srt.edb);
@@ -39,7 +51,7 @@ void typing_speed_test(vector<char>& input, vector<char>& text, test_stat *tst)
 
 	auto start = high_resolution_clock::now();
 		
-	while(text.size() < input.size())
+	while(index < input.size())
 	{
 		ch = getchar();
 		if(ch != input[index])
@@ -50,10 +62,10 @@ void typing_speed_test(vector<char>& input, vector<char>& text, test_stat *tst)
 		else
 		{
 			cout << ch;
-			text.push_back(ch);
 			index++;
 		}
 
+		text.push_back(ch);
 	}
 
 	write_error_db(&g_srt.edb);
