@@ -170,7 +170,8 @@ void string_split(vector<char>& str, char c, vector<string>& words)
 
 	for(index = 0; index < str.size(); index++)
 	{
-		if(str[index] == c)
+		/* also include newline charcter */
+		if((str[index] == c) || (str[index] == '\n'))
 		{
 			words.push_back(word);
 			word.clear();
@@ -266,19 +267,20 @@ int write_mistyped_words(vector<string>& words)
 }
 
 
-int find_string(vector<string> words, string word)
+int find_string(vector<string>& words, string word)
 {
 	int ret = 0;
 	for(unsigned int i = 0; i < words.size(); i++)
 	{
 		ret = words[i].compare(word);
+		// printf("comparing %s and %s: %d\n", words[i].c_str(), word.c_str(), ret);
 		if(ret == 0)
 		{
 			/* return index */
 			return i;
 		}
-		// printf("comparing %s and %s: %d\n", words[i].c_str(), word.c_str(), ret);
 	}
 
+	// printf("\n\n");
 	return TYPE_SIM_FAILURE;
 } 

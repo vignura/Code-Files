@@ -27,6 +27,6 @@ void string_split(vector<char>& str, char c, vector<string>& words);
 void print_words(vector<string>& words);
 int write_mistyped_words(vector<string>& words);
 int read_mistyped_words(vector<string>& words);
-int find_string(vector<string> words, string word);
+int find_string(vector<string>& words, string word);
 
 #endif /* _TYPING_SIMULATOR_ERRORLOG_H */

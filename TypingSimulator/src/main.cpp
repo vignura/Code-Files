@@ -74,9 +74,9 @@ void typing_speed_test(vector<char>& input, vector<char>& text, test_stat *tst)
 	auto time = duration_cast<milliseconds>(stop - start);
 
 	tst->time =  (time.count() / 1000.00);
-	tst->words = ((double)text.size() / (double)CHARS_PER_WORD);
+	tst->words = ((double)input.size() / (double)CHARS_PER_WORD);
 	tst->speed = (tst->words / tst->time) * 60;
-	tst->accuracy = ((double)(text.size() - errors) / text.size()) * 100;
+	tst->accuracy = ((double)(input.size() - errors) / input.size()) * 100;
 }
 
 int process_cmdline_args(int argc, const char *argv[], vector<char>& input)
