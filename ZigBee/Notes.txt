@@ -1,0 +1,25 @@
+1) What is ZigBee ?
+ZigBee is a low power, low bitrate (250 kbps), wireless network protocol for wireless node connected with mesh topology.
+
+2) How mesh topology works ?
+Consider wireless adhoc network with a single Gateway (G) and two nodes (n1 and n2) connected using ZigBee and both the nodes (n1 and n2) are within the range of the Gateway,
+so that both the nodes can communicate to the Gateway directly. Now if a third node (n3) joins the network, but it is just out of range to directly communicate to the Gateway,
+but within the range of both n1 and n2.
+Now there are few possibilites that we can consider,
+  2.1) n3 needs to move into the range
+  2.2) n3 can send data through n1 or n2 to G.
+if we consider possibility 2.2, how a node (n1 or n2) can act as Gateway to another node n3 explains what mesh topology. For, node n3 to communicate with n1 or n2 or G, first
+  2.3) it must know what other devices are out there? (in our sceneraio, n3 can discover n1 and n2 by detecting their RF signals, as they are in range, but to discover G,
+  n3 has to query both n1 and n2 about it (like a ARP request in IP netowrks) and get the response for it from both nodes. After finding the path to G, n3 can send data to G
+  through the discovered path).
+  
+  3) What are the device types in Zigbee?
+  ZC  - Zigbee Coordinator the most capable device, act as trust party, gateway and etc (Zigbee lite allows network with a coordinator)
+  ZR  - Zigbee Router which acts as an intermediate and routes the packets
+  ZED - Zigbee End Decive that usualy send or recives data.
+  
+  Links:
+  https://en.wikipedia.org/wiki/Zigbee
+  https://www.youtube.com/watch?v=pbt7c_zIQWQ
+  https://www.pocket-lint.com/smart-home/news/129857-what-is-zigbee-and-why-is-it-important-for-your-smart-home
+  https://time.com/3745059/smart-home-wireless-networks/
