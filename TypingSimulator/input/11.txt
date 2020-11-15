@@ -1,0 +1,7 @@
+A hardware exception occurred, meaning that the hardware detected a fault condition that was notified to the kernel, which in
+turn sent a corresponding signal to the process concerned. Examples of hardware exceptions include executing a malformed
+machine-language instruction, dividing by 0, or referencing a part of memory that is inaccessible.
+The user typed one of the terminal special characters that generate signals. These characters include the interrupt character
+(usually Control-C) and the suspend character (usually Control-Z).
+A software event occurred. For example, input became available on a file descriptor, the terminal window was resized, a timer
+went off, the process's CPU time limit was exceeded, or a child of this process terminated.

@@ -1,0 +1,4 @@
+Each signal is defined as a unique (small) integer, starting sequentially from 1. These integers are defined in <signal.h> with
+symbolic names of the form SIGxxxx. Since the actual numbers used for each signal vary across implementations, it is these
+symbolic names that are always used in programs. For example, when the user types the interrupt character, SIGINT (signal number
+2) is delivered to a process.

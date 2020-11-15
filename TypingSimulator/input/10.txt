@@ -1,0 +1,4 @@
+One process can (if it has suitable permissions) send a signal to another process. In this use, signals can be employed as a
+synchronization technique, or even as a primitive form of interprocess communication (IPC). It is also possible for a process
+to send a signal to itself. However, the usual source of many signals sent to a process is the kernel. Among the types of events
+that cause the kernel to generate a signal for a process are the following:

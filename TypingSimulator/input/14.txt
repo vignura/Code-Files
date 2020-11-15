@@ -1,0 +1,5 @@
+Normally, a pending signal is delivered to a process as soon as it is next scheduled to run, or immediately if the process is
+already running (e.g., if the process sent a signal to itself). Sometimes, however, we need to ensure that a segment of code is
+not interrupted by the delivery of a signal. To do this, we can add a signal to the process's signal mask, a set of signals whose
+delivery is currently blocked. If a signal is generated while it is blocked, it remains pending until it is later unblocked
+(removed from the signal mask). Various system calls allow a process to add and remove signals from its signal mask.

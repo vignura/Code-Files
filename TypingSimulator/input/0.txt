@@ -1,0 +1,1 @@
+Signals are analogous to hardware interrupts in that they interrupt the normal flow of execution of a program; in most cases.
