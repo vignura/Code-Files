@@ -6,9 +6,19 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Map;
+
+class EndPoint {
+	String name;
+
+	private EndPoint(){
+		name = "";
+	}
+}
 
 class Device implements Serializable {
 	String name;
+	Map<Integer, EndPoint> endPointMap;
 
 	public Device(String name){
 		this.name = name;
