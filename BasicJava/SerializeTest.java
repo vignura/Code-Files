@@ -46,7 +46,7 @@ public class SerializeTest {
 			System.out.println("adding "+dev.getDevName());	
 		}		
 		
-		writeDevList(devList);
+		// writeDevList(devList);
 		devList.clear();
 		devList = ReadDevList();
 	}
@@ -83,6 +83,8 @@ public class SerializeTest {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+
+        System.out.println("end 1244 ");
 
         return devList;
 	}
