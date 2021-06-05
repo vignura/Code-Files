@@ -5,6 +5,7 @@
 using namespace std;
 
 // #define ENABLE_DEBUG_PRINTS
+#define UNIFORMITY_FACTOR	1000
 #define RAND_NUM_LIMIT	100
 #define LIST_SIZE 		10
 #define MERGE_LIST_TEST_SIZE (LIST_SIZE / 2)
@@ -27,8 +28,6 @@ void bubble_sort_test();
 int main()
 {
 	int list[LIST_SIZE] = {0};
-
-	srand(time(0));
 
 	printf("Filling the list with random numbers ...\n");
 	fill_random_numbers(list, LIST_SIZE);
@@ -62,15 +61,22 @@ void print_list(int *list, int list_size)
 
 void fill_random_numbers(int *list, int list_size)
 {
+	static bool is_seeded = false;
+
 	if((list == NULL)|| (list_size < 1))
 	{
 		return;
 	}
 
-	// srand(time(0));
+	if(!is_seeded)
+	{
+		srand(time(0));
+		is_seeded = true;
+	}
+
 	for (int i = 0; i < list_size; ++i)
 	{
-		list[i] = (rand() % RAND_NUM_LIMIT);
+		list[i] = ((rand() / UNIFORMITY_FACTOR) % RAND_NUM_LIMIT);
 	}
 }
 
