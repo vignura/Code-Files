@@ -59,9 +59,12 @@ int main(int argc, char *argv[]) {
     {
         memset(arrcTXBuffer, 0, sizeof(arrcTXBuffer));
         memset(arrcRXBuffer, 0, sizeof(arrcRXBuffer));
-        
+
         // read message from CLI
-        iTxMsgSize = readMessage(arrcTXBuffer, sizeof(arrcTXBuffer));
+        // add client ID
+        iRetVal = snprintf(arrcTXBuffer, sizeof(arrcTXBuffer), "[Client ID: %d] ", clientID);
+        iTxMsgSize = iRetVal;
+        iTxMsgSize += readMessage((arrcTXBuffer + iRetVal), sizeof(arrcTXBuffer));
 
         // send message to server
         iRetVal = sendto(iSocket, arrcTXBuffer, iTxMsgSize, /*flags*/ 0, (struct sockaddr *) &ServAddr, sizeof(ServAddr));
