@@ -55,6 +55,7 @@ int main(int argc, char *argv[]) {
     ServAddr.sin_addr.s_addr = inet_addr(SERVER_ADDR);
     ServAddr.sin_port = htons(SERVER_PORT);
 
+
     while(1)
     {
         memset(arrcTXBuffer, 0, sizeof(arrcTXBuffer));
@@ -130,3 +131,32 @@ int readLine(char* line, int size)
 
     return count;
 }
+
+#if 0
+void *eventListener()
+{
+    char arrcRXBuffer[MAX_MSG] = {0};
+    struct sockaddr_in ServAddr = {0};
+    struct sockaddr_in ClientAddr = {0};
+
+    /* socket creation */
+    iSocket = socket(AF_INET, SOCK_DGRAM, 0);
+    if(iSocket < 0)
+    {
+        printf("%d: cannot open event listener socket \n", iSocket);
+        return ;
+    }
+
+    // set the client address length
+    iAddrSize = sizeof(ServAddr);
+    // set the server address
+    ServAddr.sin_family = AF_INET;
+    ServAddr.sin_addr.s_addr = inet_addr(SERVER_ADDR);
+    ServAddr.sin_port = htons(1995);
+
+    while (1)
+    {
+        memset(arrcRXBuffer, 0, sizeof(arrcRXBuffer));
+    }
+}
+#endif

@@ -9,11 +9,14 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "queue.h"
+#include <pthread.h>
 
 #define MAX_MSG             100
 #define SERVER_PORT         5555
 
 int processRequest(char* request, int requestSize, char* response, int* responseSize);
+void *runThread();
 
 int main(int argc, char *argv[]) {
 
@@ -53,6 +56,9 @@ int main(int argc, char *argv[]) {
 
    	// set the client address size 
    	ClientAddrSize = sizeof(ClientAddr);
+
+	pthread_t ptid;
+	pthread_create(&ptid, NULL, &runThread, NULL);
 
     while(1) 
     {
@@ -102,8 +108,23 @@ int processRequest(char* request, int requestSize, char* response, int* response
 	}
 
 	printf("Processing Request: %s\n", request);
+	enQueue(request);
 	size = snprintf(response, *responseSize, "server: success [%s]", request);
 	*responseSize = size;
 
 	return iRetVal;
+}
+
+void *runThread()
+{
+    while(1)
+    {
+        char *task = getQueueValue();
+	if (task != NULL)
+	{
+		printf("Executing task = %s\n", task);
+		sleep(20);
+		deQueue();
+	}
+    }
 }
