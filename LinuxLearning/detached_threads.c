@@ -1,4 +1,4 @@
-/* compile command: gcc detached_threads.c -o detached_threads -lpthread */
+/* compile command: gcc detached_threads.c -o detached_threads -lpthread*/
 #include <stdio.h>
 #include <pthread.h>
 #include <stdlib.h>
