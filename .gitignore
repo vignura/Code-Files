@@ -7,3 +7,5 @@
 *.order
 *.symvers
 *.class
+CookingPlan/build/
+CookingPlan/.vscode/
