@@ -7,13 +7,14 @@
 // #define PRINT_SWAPS
 
 #define TEST_SIZE       5
-#define ALGO_COUNT      4
-#define ALGO_NAMES  {"bubble sort", "bubble sort optimized", "selection sort", "insertion sort"}
+#define ALGO_COUNT      5
+#define ALGO_NAMES  {"bubble sort", "bubble sort optimized", "selection sort", "insertion sort", "merge_sort"}
 
 #define BUBBLE_SORT        0
 #define BUBBLE_SORT_OPT    1
 #define SELECTION_SORT     2
 #define INSERTION_SORT     3
+#define MERGE_SORT         4
 
 ///////////////////////////////////
 void fill_random_numbers(int *list, int list_size);
@@ -23,6 +24,7 @@ void bubble_sort(int *list, int list_size);
 void bubble_sort_opt(int *list, int list_size);
 void selection_sort(int *list, int list_size);
 void insertion_sort(int *list, int list_size);
+void merge_sort(int *list, int list_size);
 ///////////////////////////////////
 
 int main()
@@ -53,7 +55,7 @@ void swap(int *a, int *b)
 
 void print_list(int *list, int list_size)
 {
-    if((list == NULL)|| (list_size < 1))
+    if((list == NULL)|| (list_size < 0))
     {
         return;
     }
@@ -273,7 +275,11 @@ void test_sorting_algo(int algo_type, int *list, int list_size, int *org_list)
             insertion_sort(list, list_size);
             break;
 
-        deafult:
+        case MERGE_SORT:
+            merge_sort(list, list_size);
+            break;
+
+        default:
             return;
     }
     
@@ -405,6 +411,73 @@ void insertion_sort(int *list, int list_size)
         list[j + 1] = key;
 
         #ifdef PRINT_LISTS
+            print_list(list, list_size);
+        #endif
+    }
+}
+
+void merge_lists(int *list1, int list1_size, int *list2, int list2_size)
+{
+    int i, j;
+    int k = 0;
+    int *tmp_list = (int*)calloc(sizeof(int), (list1_size + list2_size));
+
+    for(i = 0, j = 0; (i < list1_size) && (j < list2_size); k++)
+    {
+        if(list1[i] < list2[j])
+        {
+            tmp_list[k] = list1[i];
+            i++;
+        }
+        else
+        {
+            tmp_list[k] = list2[j];
+            j++;
+        }
+    }
+
+    // copy the remaining elements form list 1 if any to the back of list
+    for(; i < list1_size; i++, k++)
+    {
+        tmp_list[k] = list1[i];
+    }
+
+    // copy the remaining elements form list 1 if any to the back of list
+    for(; j < list2_size; j++, k++)
+    {
+        tmp_list[k] = list2[j];
+    }
+
+    // copy the sorted elements back to original list
+    k = 0;
+    for(i = 0; i < list1_size; i++, k++)
+    {
+        list1[i] = tmp_list[k];
+    }
+
+    for(j = 0; j < list2_size; j++, k++)
+    {
+        list2[j] = tmp_list[k];
+    }
+
+    free(tmp_list);
+}
+
+void merge_sort(int *list, int list_size)
+{
+    #ifdef PRINT_LISTS
+        printf("\nInput\t");
+        print_list(list, list_size);
+    #endif
+
+    int mid = list_size / 2;
+    if(list_size > 1)
+    {
+        merge_sort(&list[0], mid);
+        merge_sort(&list[mid], (list_size -mid));
+        merge_lists(&list[0], mid, &list[mid], (list_size -mid));
+        #ifdef PRINT_LISTS
+            printf("\nSorted\t");
             print_list(list, list_size);
         #endif
     }
