@@ -7,6 +7,9 @@ void print_array_1(int* array, int size);
 void print_array_2(int (*array)[ARRAY_SIZE_1]);
 void test_1();
 void test_2();
+void test_3();
+void test_4();
+void test_5();
 
 int main()
 {
@@ -36,8 +39,10 @@ int main()
     // print_array_1(array, (sizeof(array) / sizeof(int)));
     // printf("print_array_2\n");
     // print_array_2(&array);
-    test_1();
-    test_2();
+    // test_1();
+    // test_2();
+    // test_3();
+    test_5();
 
     return 0;
 }
@@ -92,4 +97,35 @@ void test_2()
     int *p = &r;
     fun(p);
     printf("%d", *p);
+}
+
+void test_3()
+{
+    int i = 5;
+    void *vptr; 
+    vptr = &i;
+    // uncomment to check for the error
+    // printf("\nValue of iptr = %d ", *vptr);
+}
+
+
+void test_4()
+{
+    char *ptr = "void pointer";
+    void *vptr;
+
+    printf("%s\n" , ptr);
+
+    vptr = &ptr;
+    printf("%s\n" , *(char**)vptr);
+
+    vptr = ptr;
+    printf("%s\n" , (char*)vptr);
+}
+
+
+void test_5()
+{
+    char *ptr = NULL;
+    printf("%s", ptr);
 }
