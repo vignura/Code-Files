@@ -7,14 +7,22 @@
 // #define PRINT_SWAPS
 
 #define TEST_SIZE       5
-#define ALGO_COUNT      5
-#define ALGO_NAMES  {"bubble sort", "bubble sort optimized", "selection sort", "insertion sort", "merge_sort"}
+#define ALGO_COUNT      8
+#define ALGO_NAMES  {"bubble sort", "bubble sort optimized", "selection sort", "insertion sort", "merge sort", "quick sort naive", "quick sort lomuto", "quick sort hoare"}
 
 #define BUBBLE_SORT        0
 #define BUBBLE_SORT_OPT    1
 #define SELECTION_SORT     2
 #define INSERTION_SORT     3
 #define MERGE_SORT         4
+#define QUICK_SORT_NAIVE   5
+#define QUICK_SORT_LOMUTO  6
+#define QUICK_SORT_HOARE   7
+
+// quick sort partiton types
+#define NAIVE_PARTITION    0
+#define LOMUTO_PARTITION   1
+#define HOARE_PARTITION    2
 
 ///////////////////////////////////
 void fill_random_numbers(int *list, int list_size);
@@ -25,6 +33,7 @@ void bubble_sort_opt(int *list, int list_size);
 void selection_sort(int *list, int list_size);
 void insertion_sort(int *list, int list_size);
 void merge_sort(int *list, int list_size);
+void quick_sort(int *list, int list_size, int partition_type);
 ///////////////////////////////////
 
 int main()
@@ -279,6 +288,18 @@ void test_sorting_algo(int algo_type, int *list, int list_size, int *org_list)
             merge_sort(list, list_size);
             break;
 
+        case QUICK_SORT_NAIVE:
+            quick_sort(list, list_size, NAIVE_PARTITION);
+            break;
+
+        case QUICK_SORT_LOMUTO:
+            quick_sort(list, list_size, LOMUTO_PARTITION);
+            break;
+
+        case QUICK_SORT_HOARE:
+            quick_sort(list, list_size, HOARE_PARTITION);
+            break;
+
         default:
             return;
     }
@@ -476,6 +497,112 @@ void merge_sort(int *list, int list_size)
         merge_sort(&list[0], mid);
         merge_sort(&list[mid], (list_size -mid));
         merge_lists(&list[0], mid, &list[mid], (list_size -mid));
+        #ifdef PRINT_LISTS
+            printf("\nSorted\t");
+            print_list(list, list_size);
+        #endif
+    }
+}
+
+int naive_partition(int *list, int list_size)
+{
+    int *tmp_list = (int*)calloc(sizeof(int), list_size);
+    // choose the last element as the pivot
+    int pivot = list[list_size -1];
+    int pivot_pos = 0;
+    int index = 0;
+
+    // copy all the samller numbers
+    for(int i = 0; i < list_size; i++)
+    {
+        if(list[i] < pivot)
+        {
+            tmp_list[index++] = list[i];
+        }
+    }
+
+    // copy the pivot
+    pivot_pos = index;
+    tmp_list[index++] = pivot;
+
+    // copy all the larger numbers
+    for(int i = 0; i < list_size; i++)
+    {
+        if(list[i] >= pivot)
+        {
+            tmp_list[index++] = list[i];
+        }
+    }
+    
+    // copy the temp array back to the original array
+    for(int i = 0; i < list_size; i++)
+    {
+        list[i] = tmp_list[i];
+    }
+
+    return pivot_pos;
+}
+
+int lomuto_partition(int *list, int list_size)
+{
+    int pivot = list[list_size -1];
+    int pivot_pos = 0;
+    int index = 0;
+
+    for(int i = 0; i < list_size -1; i++)
+    {
+        if(list[i] <= pivot)
+        {
+            swap(&list[i], &list[index]);
+            index++;
+        }
+    }
+    
+    pivot_pos = index;
+    swap(&list[index], &list[list_size -1]);
+
+    return pivot_pos;
+}
+
+int hoare_partition(int *list, int list_size)
+{
+    int pivot_pos = 0;
+    return pivot_pos;
+}
+
+void quick_sort(int *list, int list_size, int partition_type)
+{
+    #ifdef PRINT_LISTS
+        printf("\nInput\t");
+        print_list(list, list_size);
+    #endif
+
+    if(list_size > 1)
+    {
+        int pivot = 0;
+        switch(partition_type)
+        {
+            case NAIVE_PARTITION:
+                pivot = naive_partition(list, list_size);
+                break;
+
+            case LOMUTO_PARTITION:
+                pivot = lomuto_partition(list, list_size);
+                break;
+
+            case HOARE_PARTITION:
+                pivot = hoare_partition(list, list_size);
+                break;
+
+            default:
+                return;
+        }
+        
+        // index - [ 0 1 2 3 4 ]
+        // array - [ 1 2 3 4 5 ]
+        // pivot         |
+        quick_sort(list, pivot, partition_type);
+        quick_sort(&list[pivot +1], (list_size -pivot -1), partition_type);
         #ifdef PRINT_LISTS
             printf("\nSorted\t");
             print_list(list, list_size);

@@ -140,7 +140,7 @@ void partition_to_equal_parts(int partition_size, int *list, int size)
         }
     }
 
-    printf("list cannot be partitioned into 3 equal sum parts !\n");
+    printf("list cannot be partitioned into %d equal sum parts !\n", partition_size);
     free(seg_pos);
 }
 
