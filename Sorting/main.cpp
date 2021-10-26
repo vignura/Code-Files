@@ -6,7 +6,8 @@
 #define PRINT_LISTS
 // #define PRINT_SWAPS
 
-#define TEST_SIZE       5
+// #define TEST_SIZE       (1024 * 128)
+#define TEST_SIZE       (5)
 #define ALGO_COUNT      8
 #define ALGO_NAMES  {"bubble sort", "bubble sort optimized", "selection sort", "insertion sort", "merge sort", "quick sort naive", "quick sort lomuto", "quick sort hoare"}
 
@@ -169,12 +170,102 @@ bool is_list_intact(int *orglist, int *list, int list_size)
 
         if(match_found == false)
         {
+            free(local_orglist);
             return false;
         }
     }
 
     free(local_orglist);
 
+    return true;
+}
+
+bool is_list_intact_bs(int *orglist, int *list, int list_size)
+{
+    int start = 0;
+    int mid = 0;
+    int end = 0;
+    bool match_found = false;
+
+    unsigned char *removed = (unsigned char*)calloc(sizeof(unsigned char), list_size);
+    // for every element in orglist, do a binary search in list and remove the match
+    for(int i = 0; i < list_size; i++)
+    {
+        start = 0;
+        end = list_size -1;
+        match_found = false;
+
+        // printf("%s: looking for %d, element number %d in original list\n", __func__, orglist[i], (i + 1));
+        while(start <= end)
+        {
+            mid = start + ((end - start) / 2);
+            if(orglist[i] == list[mid])
+            {
+                if(!removed[mid])
+                {
+                    removed[mid] = 1;
+                    match_found = true;
+                    break;
+                }
+                else
+                {
+                    // need to do a linear serach 
+                    // go right 
+                    int j = mid + 1;
+                    while((j <= end) && (list[j] == list[mid]))
+                    {
+                        if(!removed[j])
+                        {
+                            removed[j] = 1;
+                            match_found = true;
+                            break;
+                        }
+                        j++;
+                    }
+
+                    if(!match_found)
+                    {
+                        // if match still not found go left 
+                        j = mid - 1;
+                        while((j >= start) && (list[j] == list[mid]))
+                        {
+                            if(!removed[j])
+                            {
+                                removed[j] = 1;
+                                match_found = true;
+                                break;
+                            }
+                            j--;
+                        }
+
+                        if(match_found)
+                        {
+                            break;
+                        }
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            else if(orglist[i] < list[mid])
+            {
+                end = mid -1;
+            }
+            else
+            {
+                start = mid + 1;
+            }
+        }
+
+        if(!match_found)
+        {
+            free(removed);
+            return false;
+        }
+    }
+    free(removed);
     return true;
 }
 
@@ -304,7 +395,7 @@ void test_sorting_algo(int algo_type, int *list, int list_size, int *org_list)
             return;
     }
     
-    if(is_list_sorted(list, list_size) && is_list_intact(org_list, list, list_size))
+    if(is_list_sorted(list, list_size) && is_list_intact_bs(org_list, list, list_size))
     {
         printf("PASS\n");
     }
@@ -540,6 +631,11 @@ int naive_partition(int *list, int list_size)
         list[i] = tmp_list[i];
     }
 
+    if(tmp_list != NULL)
+    {
+        free(tmp_list);
+    }
+
     return pivot_pos;
 }
 
@@ -566,7 +662,32 @@ int lomuto_partition(int *list, int list_size)
 
 int hoare_partition(int *list, int list_size)
 {
+    int pivot = list[0];
     int pivot_pos = 0;
+    int i = 0;
+    int j =  list_size -1;
+
+    while(true)
+    {
+        while(list[i] < pivot)
+        {
+            i++;
+        }
+
+        while(list[j] > pivot)
+        {
+            j--;
+        }
+
+        if(i >= j)
+        {
+            pivot_pos = j;
+            break;
+        }
+
+        swap(&list[i], &list[j]);
+    }
+
     return pivot_pos;
 }
 
