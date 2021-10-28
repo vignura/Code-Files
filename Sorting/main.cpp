@@ -8,8 +8,10 @@
 
 // #define TEST_SIZE       (1024 * 128)
 #define TEST_SIZE       (5)
-#define ALGO_COUNT      8
-#define ALGO_NAMES  {"bubble sort", "bubble sort optimized", "selection sort", "insertion sort", "merge sort", "quick sort naive", "quick sort lomuto", "quick sort hoare"}
+#define ALGO_COUNT      9
+#define ALGO_NAMES  {"bubble sort", "bubble sort optimized", "selection sort", "insertion sort",\
+                     "merge sort", "quick sort naive", "quick sort lomuto", "quick sort hoare",\
+                     "heap sort"}
 
 #define BUBBLE_SORT        0
 #define BUBBLE_SORT_OPT    1
@@ -19,6 +21,7 @@
 #define QUICK_SORT_NAIVE   5
 #define QUICK_SORT_LOMUTO  6
 #define QUICK_SORT_HOARE   7
+#define HEAP_SORT          8
 
 // quick sort partiton types
 #define NAIVE_PARTITION    0
@@ -35,6 +38,7 @@ void selection_sort(int *list, int list_size);
 void insertion_sort(int *list, int list_size);
 void merge_sort(int *list, int list_size);
 void quick_sort(int *list, int list_size, int partition_type);
+void heap_sort(int *list, int list_size);
 ///////////////////////////////////
 
 int main()
@@ -44,12 +48,20 @@ int main()
 
     fill_random_numbers(list, TEST_SIZE);
 
+#if 0
     for(int i = 0; i < ALGO_COUNT; i++)
     {
+        if((i == QUICK_SORT_NAIVE) || (i == QUICK_SORT_LOMUTO) || (i == QUICK_SORT_HOARE))
+        {
+            continue;
+        }
         memcpy(list_test, list, sizeof(list));
         test_sorting_algo(i, list_test, TEST_SIZE, list);
     }
-
+#else
+    memcpy(list_test, list, sizeof(list));
+    test_sorting_algo(HEAP_SORT, list_test, TEST_SIZE, list);
+#endif
     return 0;
 }
 
@@ -391,6 +403,10 @@ void test_sorting_algo(int algo_type, int *list, int list_size, int *org_list)
             quick_sort(list, list_size, HOARE_PARTITION);
             break;
 
+        case HEAP_SORT:
+            heap_sort(list, list_size);
+            break;
+
         default:
             return;
     }
@@ -598,13 +614,14 @@ void merge_sort(int *list, int list_size)
 int naive_partition(int *list, int list_size)
 {
     int *tmp_list = (int*)calloc(sizeof(int), list_size);
+    // int tmp_list[TEST_SIZE] = {0};
     // choose the last element as the pivot
     int pivot = list[list_size -1];
     int pivot_pos = 0;
     int index = 0;
 
     // copy all the samller numbers
-    for(int i = 0; i < list_size; i++)
+    for(int i = 0; i < list_size -1; i++)
     {
         if(list[i] < pivot)
         {
@@ -631,11 +648,8 @@ int naive_partition(int *list, int list_size)
         list[i] = tmp_list[i];
     }
 
-    if(tmp_list != NULL)
-    {
-        free(tmp_list);
-    }
-
+    free(tmp_list);
+    
     return pivot_pos;
 }
 
@@ -722,11 +736,65 @@ void quick_sort(int *list, int list_size, int partition_type)
         // index - [ 0 1 2 3 4 ]
         // array - [ 1 2 3 4 5 ]
         // pivot         |
+        printf("pivot: %d\n", pivot);
         quick_sort(list, pivot, partition_type);
         quick_sort(&list[pivot +1], (list_size -pivot -1), partition_type);
+        
         #ifdef PRINT_LISTS
             printf("\nSorted\t");
             print_list(list, list_size);
         #endif
+    }
+}
+
+void heapify(int *list, int list_size, int root)
+{
+    int max_pos = root;
+    int left_pos = 2 * root + 1;
+    int right_pos = 2 * root + 2;
+    
+    #ifdef PRINT_LISTS
+        printf("\nroot: %d Input: \t", root);
+        print_list(list, list_size);
+    #endif
+
+    // check if left child node is larger than max_pos
+    if(left_pos < list_size && list[max_pos] < list[left_pos])
+    {
+        max_pos = left_pos;
+    }
+
+    // check if right child node is larger than max_pos
+    if(right_pos < list_size && list[max_pos] < list[right_pos])
+    {
+        max_pos = right_pos;
+    }
+
+    if(max_pos != root)
+    {
+        swap(&list[max_pos], &list[root]);
+        // recursively heapify the affected sub tree
+        heapify(list, list_size, max_pos);
+    }
+}
+
+void heap_sort(int *list, int list_size)
+{
+    // build a max heap form bottom up
+    for(int i = (list_size / 2) -1;  i >= 0; i--)
+    {
+        heapify(list, list_size, i);
+    }
+
+    // pick the largest element form the max heap [which is the first one]
+    // so swap the first element with the last and remove the last element 
+    // for the heap. Now build a max heap again on the reduced list.
+    for(int i = list_size -1; i > 0; i--)
+    {
+        swap(&list[0], &list[i]);
+        // In the below call the root node is set as 0, because the above
+        // swap has only affected the first node (ie 0), rest of the list
+        // still unaffected and is in max heap state
+        heapify(list, i, 0);
     }
 }
