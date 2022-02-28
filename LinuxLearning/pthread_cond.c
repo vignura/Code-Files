@@ -60,11 +60,13 @@ void* signalling_thread()
 {
     // Let's signal condition variable cond1
     printf("%s: Signaling condition variable cond1\n", __func__);
+    pthread_mutex_lock(&lock);
     int ret = pthread_cond_signal(&cond1);
     if(ret != 0)
     {
         perror("pthread_cond_signal");
     }
+    pthread_mutex_unlock(&lock);
     printf("%s: Returning thread\n", __func__);
 }
 
@@ -78,7 +80,7 @@ int main()
  
     // sleep for 1 sec so that thread 1
     // wou%lu: get a chance to run first
-    sleep(0.2);
+    sleep(1);
  
     // Create thread 2
     pthread_create(&tid2, NULL, signalling_thread, NULL);
