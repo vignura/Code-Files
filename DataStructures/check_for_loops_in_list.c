@@ -29,6 +29,8 @@ bool list_has_loop(node* head)
 
 	while (list != NULL && jump != NULL)
 	{
+		// move to next node
+		list = list->next;
 		// jump 2 nodes
 		jump = jump->next;
 		if (jump != NULL)
@@ -41,9 +43,6 @@ bool list_has_loop(node* head)
 			has_loop = true;
 			break;
 		}
-
-		// move to next node
-		list = list->next;
 	}
 
 	return has_loop;
@@ -95,6 +94,10 @@ int main(int argc, char const *argv[])
 	{
 		printf("no\n");
 	}
+
+	free_list(list1);
+	free_list(list2);
+	free_list(list3);
 
 	return 0;
 }

@@ -77,5 +77,8 @@ int main(int argc, char const *argv[])
 		printf ("no\n");
 	}
 
+	free_list(list);
+	free_list(cyclic_list);
+
 	return 0;
 }

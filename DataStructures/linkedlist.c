@@ -59,6 +59,19 @@ void create_list(node** head, int size)
 	} 
 }
 
+void free_list(node* head)
+{
+	node* list = head;
+	node* prev = head;
+
+	while (list != NULL)
+	{
+		prev = list;
+		list = list->next;
+		free(prev);
+	}
+}
+
 node* clone_list(node* head)
 {
 	node* list = head;

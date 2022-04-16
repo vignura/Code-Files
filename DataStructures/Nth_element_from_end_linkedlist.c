@@ -72,6 +72,6 @@ int main(int argc, char const *argv[])
 	print_list(numlist);
 	nth_element_from_last_1(numlist, find);
 	nth_element_from_last_2(numlist, find);
-
+	free_list(numlist);
 	return 0;
 }
