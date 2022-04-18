@@ -41,7 +41,14 @@ void create_list(node** head, int size)
 		if (i == 0)
 		{
 			(*head)->data = data +1;
-			(*head)->next = (node*)calloc(1, sizeof(node));
+			if (size > 1)
+			{
+				(*head)->next = (node*)calloc(1, sizeof(node));
+			}
+			else
+			{
+				(*head)->next = NULL;	
+			}
 			new_node = (*head)->next;
 		}
 		else if (i > 0 && i < (size -1))
