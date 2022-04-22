@@ -29,6 +29,7 @@ void print_list_bounded(node* head, int bound)
 	printf("\b]\n");
 }
 
+#if 0
 void create_list(node** head, int size)
 {
 	static int data = 0;
@@ -65,6 +66,26 @@ void create_list(node** head, int size)
 
 	} 
 }
+#else
+
+void create_list(node** head, int size)
+{
+	static int data = 0;
+	(*head) = (node*)calloc(1, sizeof(node));
+	node* list = (*head);
+
+	for (int i = 0; i < size-1; ++i)
+	{
+		list->data = ++data;
+		list->next = (node*)calloc(1, sizeof(node));
+		list = list->next;
+	}
+
+	list->data = ++data;
+	list->next = NULL;
+}
+
+#endif
 
 void free_list(node* head)
 {
