@@ -1,6 +1,9 @@
 #include <iostream>
+#include <pthread.h>
 
 using namespace std;
+
+pthread_mutex_t mtx = PTHREAD_MUTEX_INITIALIZER;
 
 class Singleton {
 
@@ -17,11 +20,18 @@ private:
 public:
 	static Singleton* getInstance()
 	{
+		refernceCount++;
+		if (instance != nullptr)
+		{
+			return instance;
+		}
+
+		pthread_mutex_lock(&mtx);
 		if (instance == nullptr)
 		{
 			instance = new Singleton();
 		}
-		refernceCount++;
+		pthread_mutex_unlock(&mtx);
 		return instance;
 	}
 
