@@ -66,8 +66,11 @@ void create_list(node** head, int size)
 
 	} 
 }
-#else
 
+#endif
+
+#if 1
+// faster
 void create_list(node** head, int size)
 {
 	static int data = 0;
@@ -85,7 +88,39 @@ void create_list(node** head, int size)
 	list->next = NULL;
 }
 
+#else
+// slower
+void create_list(node **head, int size)
+{
+	static int data = 0;
+	for (int i = 0; i < size; ++i)
+	{
+		add_to_list(head, ++data);
+	}
+}
+
 #endif
+
+void add_to_list(node** head, int data)
+{
+	if ((*head) != NULL)
+	{
+		node *list = (*head);
+		while (list != NULL && list->next != NULL)
+		{
+			list = list->next;
+		}
+		list->next = (node*) calloc(1, sizeof(node));
+		list->next->data = data;
+		list->next->next = NULL;
+	}
+	else
+	{
+		(*head) = (node*) calloc(1, sizeof(node));
+		(*head)->data = data;
+		(*head)->next = NULL;
+	}
+}
 
 void free_list(node* head)
 {
