@@ -16,13 +16,12 @@ class neuralNetwork:
         # random weights based on normal distribution
         self.wih = numpy.random.normal(0.0, pow (self.inodes, -0.5), (self.hnodes, self.inodes))
         self.who = numpy.random.normal(0.0, pow (self.hnodes, -0.5), (self.onodes, self.hnodes))
-        print (neuralNetwork.__init__.__qualname__,": Weights input hidden")
-        print (self.wih)
-        print (neuralNetwork.__init__.__qualname__,": Weights hidden output")
-        print (self.who )
+        # print (neuralNetwork.__init__.__qualname__,": Weights input hidden")
+        # print (self.wih)
+        # print (neuralNetwork.__init__.__qualname__,": Weights hidden output")
+        # print (self.who )
         # set the activation function
         self.activationFunction = lambda x : scipy.special.expit(x)
-        pass
     def train(self, inputsList, targetList):
         # convert list to 2d array
         inputs = numpy.array(inputsList, ndmin=2).T
@@ -41,27 +40,26 @@ class neuralNetwork:
         self.who += self.lr * numpy.dot(outputErrors * finalOutpus * (1.0 - finalOutpus), numpy.transpose(hiddenOutputs))
         # update the input layer weights
         self.wih += self.lr * numpy.dot(hiddenErrors * hiddenOutputs * (1.0 - hiddenOutputs), numpy.transpose(inputs))
-        pass
     def query(self, inputsList):
         # convert input list to 2d input array
         inputs = numpy.array(inputsList, ndmin=2).T
-        print (neuralNetwork.query.__qualname__,": inputs")
-        print (inputs)
+        # print (neuralNetwork.query.__qualname__,": inputs")
+        # print (inputs)
         # calculate input to hidden nodes
         hiddenInputs = numpy.dot(self.wih, inputs)
-        print (neuralNetwork.query.__qualname__,": hidden inputs")
-        print (hiddenInputs)
+        # print (neuralNetwork.query.__qualname__,": hidden inputs")
+        # print (hiddenInputs)
         # calculate the hidden outputs
         hiddenOutputs = self.activationFunction(hiddenInputs)
-        print (neuralNetwork.query.__qualname__,": hidden outputs")
-        print (hiddenOutputs)
+        # print (neuralNetwork.query.__qualname__,": hidden outputs")
+        # print (hiddenOutputs)
         # calculate the signals for the final layer
         finalInputs = numpy.dot(self.who, hiddenOutputs)
-        print (neuralNetwork.query.__qualname__,": final inputs")
-        print (finalInputs)
+        # print (neuralNetwork.query.__qualname__,": final inputs")
+        # print (finalInputs)
         finalOutpus = self.activationFunction(finalInputs)
-        print (neuralNetwork.query.__qualname__,": final outputs")
-        print (finalOutpus)
+        # print (neuralNetwork.query.__qualname__,": final outputs")
+        # print (finalOutpus)
         return finalOutpus
 
 inputNodes = 3
