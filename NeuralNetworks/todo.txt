@@ -1,0 +1,7 @@
+1. implement getters and setters for neuralNetwork class
+2. implement mnistClassifier class, with following api()
+    1. init - initialize parameters
+    2. store/load - store/load trained weights to/from files (file name should capture neuralNetwork parameters)
+    3. train - train on neural network on dataset
+    4. test - test the trained neural network
+    5. rotate dataset - implement a function to rotate dataset to improve traning
