@@ -62,10 +62,10 @@ class neuralNetwork:
         # print (finalOutpus)
         return finalOutpus
 
-inputNodes = 3
-hiddenNodes = 3
-outputNodes = 3
-learningRate = 0.5
+# inputNodes = 3
+# hiddenNodes = 3
+# outputNodes = 3
+# learningRate = 0.5
 
-n = neuralNetwork(inputNodes, hiddenNodes, outputNodes, learningRate)
-n.query([1.0, 0.5, -1.5])
+# n = neuralNetwork(inputNodes, hiddenNodes, outputNodes, learningRate)
+# n.query([1.0, 0.5, -1.5])
