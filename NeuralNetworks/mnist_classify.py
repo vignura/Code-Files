@@ -55,13 +55,13 @@ class mnistClassifier(nnm.neuralNetworkManager):
 
 ################################################################################################
 inputNodes = 784
-hiddenNodes = 500
+hiddenNodes = 10
 outputNodes = 10
-learningRate = 0.1
+learningRate = 0.01
 epochs = 1
 shouldSave = True
-# modelFile = ""
-modelFile = "NeuralNetworks/saved_networks/nn_ip(784)_hn(500)_on(10)_lr(0.1)_ep(1).npy"
+modelFile = ""
+# modelFile = "NeuralNetworks/saved_networks/nn_ip(784)_hn(500)_on(10)_lr(0.1)_ep(5).npy"
 # modelFile = "NeuralNetworks/saved_networks/nn_ip(784)_hn(100)_on(10)_lr(0.1)_ep(5).npy"
 
 if os.path.exists(modelFile):
@@ -92,7 +92,7 @@ print("performance:", scorecard_array.sum() / scorecard_array.size)
 
 # save network
 if shouldSave:
-    mnist.saveNetwork("NeuralNetworks/saved_networks/")
+    mnist.saveNetwork("NeuralNetworks/saved_networks/", "mnist_")
 
 # trainingDataFile = open("NeuralNetworks/mnist_dataset/mnist_train.csv", 'r')
 # trainingDataList = trainingDataFile.readlines()

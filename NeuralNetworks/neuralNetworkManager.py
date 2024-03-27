@@ -11,8 +11,8 @@ class neuralNetworkManager:
         fileName = f"nn_ip({self.nn.inodes})_hn({self.nn.hnodes})_on({self.nn.onodes})_lr({self.nn.lr})_ep({self.epochs}).npy"
         return fileName
 
-    def saveNetwork(self, path):
-        fileName = path + self.generateFileName()
+    def saveNetwork(self, path, prefix=None):
+        fileName = path + prefix + self.generateFileName()
         nn = {
             'inodes': self.nn.inodes,
             'hnodes': self.nn.hnodes,
