@@ -23,6 +23,7 @@ class neuralNetwork:
             # print (self.who )
         # set the activation function
         self.activationFunction = lambda x : scipy.special.expit(x)
+        # self.activationFunction = lambda x : np.tanh(x)
     def train(self, inputsList, targetList):
         # convert list to 2d array
         inputs = np.array(inputsList, ndmin=2).T
